@@ -1,16 +1,27 @@
-let passos = 0;
+// carregar passos guardados
+// carregar passos guardados
+let passos = localStorage.getItem("passos")
+  ? parseInt(localStorage.getItem("passos"))
+  : 0;
+
 let intervalo = null;
 let andando = false;
+let posX = 0;
 
 // elementos
 const contador = document.getElementById("steps");
 const boneco = document.getElementById("character");
 const botao = document.getElementById("startBtn");
+const resetBtn = document.getElementById("resetBtn");
 
-// estados do boneco (simples animação)
+// estados do boneco (animação simples)
 const poses = ["🚶‍♂️", "🚶‍♀️"];
 let poseAtual = 0;
 
+// mostrar passos ao carregar
+contador.textContent = passos;
+
+// iniciar caminhada
 botao.addEventListener("click", () => {
   if (andando) return;
 
@@ -18,12 +29,39 @@ botao.addEventListener("click", () => {
   botao.disabled = true;
 
   intervalo = setInterval(() => {
+    // contador
     passos++;
     contador.textContent = passos;
+    localStorage.setItem("passos", passos);
 
-    // alternar pose do boneco
+    // animação do boneco
     poseAtual = (poseAtual + 1) % poses.length;
     boneco.textContent = poses[poseAtual];
 
-  }, 500); // 0,5 segundo
+    // movimento no ecrã
+    posX += 5;
+    boneco.style.left = posX + "px";
+
+    if (posX > 260) {
+      posX = 0;
+    }
+
+  }, 500);
+});
+
+// parar / reset
+resetBtn.addEventListener("click", () => {
+  clearInterval(intervalo);
+  intervalo = null;
+  andando = false;
+
+  passos = 0;
+  contador.textContent = passos;
+  localStorage.setItem("passos", passos);
+
+  posX = 0;
+  boneco.style.left = "0px";
+  boneco.textContent = "🚶‍♂️";
+
+  botao.disabled = false;
 });
