@@ -5,15 +5,16 @@ body {
 }
 
 #game {
-  width: 300px;
-  height: 150px;
+  width: 95vw;          /* quase toda a largura do ecrã */
+  max-width: 600px;     /* limite em telas grandes */
+  height: 50vh;         /* metade do ecrã */
+  max-height: 350px;
   margin: 20px auto;
   border: 2px solid #000;
   position: relative;
   overflow: hidden;
   background-color: #fff;
 }
-
 #character {
   position: absolute;
   left: 0;
