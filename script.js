@@ -1,23 +1,29 @@
-let steps = 0;
-let position = 0;
-let interval = null;
+let passos = 0;
+let intervalo = null;
+let andando = false;
 
-const stepsSpan = document.getElementById("steps");
-const character = document.getElementById("character");
-const startBtn = document.getElementById("startBtn");
+// elementos
+const contador = document.getElementById("contador");
+const boneco = document.getElementById("boneco");
+const botao = document.getElementById("iniciar");
 
-startBtn.addEventListener("click", () => {
-  if (interval) return;
+// estados do boneco (simples animação)
+const poses = ["🚶‍♂️", "🚶‍♀️"];
+let poseAtual = 0;
 
-  interval = setInterval(() => {
-    steps++;
-    position += 5;
+botao.addEventListener("click", () => {
+  if (andando) return;
 
-    if (position > 260) {
-      position = 0;
-    }
+  andando = true;
+  botao.disabled = true;
 
-    character.style.left = position + "px";
-    stepsSpan.textContent = steps;
-  }, 500);
+  intervalo = setInterval(() => {
+    passos++;
+    contador.textContent = passos;
+
+    // alternar pose do boneco
+    poseAtual = (poseAtual + 1) % poses.length;
+    boneco.textContent = poses[poseAtual];
+
+  }, 500); // 0,5 segundo
 });
