@@ -47,10 +47,17 @@ resetBtn.addEventListener("click", () => {
   intervalo = null;
   andando = false;
 
-  passos = 0;
-  contador.textContent = passos;
-  localStorage.setItem("passos", passos);
+  resetBtn.addEventListener("click", () => {
+  clearInterval(intervalo);
+  intervalo = null;
+  andando = false;
 
+  // NÃO mexe nos passos
+  // NÃO reseta contador
+  // apenas pausa
+
+  botao.disabled = false;
+});
   posX = 0;
   boneco.style.left = "0px";
   
