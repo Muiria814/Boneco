@@ -57,3 +57,9 @@ button:disabled {
   background-color: #555;
   color: #ccc;
 }
+
+#doge {
+  font-size: 32px;
+  font-weight: bold;
+  color: #f5c518; /* dourado tipo DOGE */
+}
