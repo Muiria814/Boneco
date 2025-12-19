@@ -1,34 +1,50 @@
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background-color: #f2f2f2;
+* {
+  box-sizing: border-box;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  text-align: center;
+}
+
+/* Título */
+h1 {
+  font-size: 28px;
+  margin: 12px 0;
+}
+
+/* Área do jogo ocupa quase todo o ecrã */
 #game {
-  width: 95vw;          /* quase toda a largura do ecrã */
-  max-width: 600px;     /* limite em telas grandes */
-  height: 50vh;         /* metade do ecrã */
-  max-height: 350px;
-  margin: 20px auto;
-  border: 2px solid #000;
+  width: 96vw;
+  height: 60vh;
+  margin: 10px auto;
+  border: 3px solid #000;
   position: relative;
   overflow: hidden;
   background-color: #fff;
 }
+
+/* Boneco */
 #character {
   position: absolute;
   left: 0;
-  bottom: 10px;
-  font-size: 40px;
-  width: 40px;
-  height: 40px;
-
-  animation: walk 0.6s infinite;
+  bottom: 12px;
+  font-size: 56px;
 }
 
-@keyframes walk {
-  0%   { content: "🚶"; }
-  25%  { content: "🚶‍♂️"; }
-  50%  { content: "🚶"; }
-  75%  { content: "🚶‍♀️"; }
+/* Texto de passos */
+p {
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+/* Botões grandes (mobile friendly) */
+button {
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 6px;
+  border-radius: 6px;
 }
