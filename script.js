@@ -7,15 +7,22 @@ let passos = localStorage.getItem("passos")
 let intervalo = null;
 let andando = false;
 let posX = 0;
+let doge = localStorage.getItem("doge")
+  ? parseFloat(localStorage.getItem("doge"))
+  : 0;
+
+const DOGE_POR_PASSOS = 1000;
 
 // elementos
 const contador = document.getElementById("steps");
 const boneco = document.getElementById("character");
 const botao = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
+const dogeEl = document.getElementById("doge");
 
 // mostrar passos ao carregar
 contador.textContent = passos;
+dogeEl.textContent = doge.toFixed(2);
 
 // iniciar caminhada
 botao.addEventListener("click", () => {
@@ -25,6 +32,10 @@ botao.addEventListener("click", () => {
   botao.disabled = true;
 
   intervalo = setInterval(() => {
+    doge = passos / DOGE_POR_PASSOS;
+dogeEl.textContent = doge.toFixed(2);
+localStorage.setItem("doge", doge);
+    
     // contador
     passos++;
     contador.textContent = passos;
