@@ -3,11 +3,10 @@
 }
 
 body {
-  margin: 0;
-  padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
   text-align: center;
+  background-color: #1e1e1e; /* fundo escuro suave */
+  color: #f0f0f0;            /* texto claro */
 }
 
 /* Título */
@@ -18,13 +17,15 @@ h1 {
 
 /* Área do jogo ocupa quase todo o ecrã */
 #game {
-  width: 96vw;
+  width: 95vw;
+  max-width: 600px;
   height: 60vh;
-  margin: 10px auto;
-  border: 3px solid #000;
+  max-height: 400px;
+  margin: 20px auto;
+  border: 2px solid #888;
   position: relative;
   overflow: hidden;
-  background-color: #fff;
+  background-color: #2a2a2a; /* cinza confortável */
 }
 
 /* Boneco */
@@ -39,7 +40,7 @@ h1 {
 p {
   font-size: 32px;
   font-weight: 600;
-  font-weight: bold;
+  color: #eaeaea;
 }
 
 /* Botões grandes (mobile friendly) */
@@ -48,9 +49,12 @@ button {
   padding: 18px 34px;
   margin: 10px;
   border-radius: 10px;
+  border: none;
+  background-color: #3a6ea5; /* azul escuro */
+  color: #ffffff;
 }
 
-#steps {
-  font-size: 34px;
-  color: #000;
+button:disabled {
+  background-color: #555;
+  color: #ccc;
 }
