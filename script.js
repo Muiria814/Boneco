@@ -14,10 +14,6 @@ const boneco = document.getElementById("character");
 const botao = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 
-// estados do boneco (animação simples)
-const poses = ["🚶‍♂️", "🚶‍♀️"];
-let poseAtual = 0;
-
 // mostrar passos ao carregar
 contador.textContent = passos;
 
