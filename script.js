@@ -3,9 +3,9 @@ let intervalo = null;
 let andando = false;
 
 // elementos
-const contador = document.getElementById("contador");
-const boneco = document.getElementById("boneco");
-const botao = document.getElementById("iniciar");
+const contador = document.getElementById("steps");
+const boneco = document.getElementById("character");
+const botao = document.getElementById("startBtn");
 
 // estados do boneco (simples animação)
 const poses = ["🚶‍♂️", "🚶‍♀️"];
