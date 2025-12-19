@@ -37,17 +37,17 @@ h1 {
 
 /* Texto de passos */
 p {
-  font-size: 28px;
-  margin: 12px 0;
+  font-size: 32px;
+  font-weight: 600;
   font-weight: bold;
 }
 
 /* Botões grandes (mobile friendly) */
 button {
-  font-size: 22px;
-  padding: 14px 26px;
-  margin: 8px;
-  border-radius: 8px;
+  font-size: 26px;
+  padding: 18px 34px;
+  margin: 10px;
+  border-radius: 10px;
 }
 
 #steps {
