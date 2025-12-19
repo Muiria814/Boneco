@@ -20,14 +20,13 @@ h1 {
   width: 95vw;
   max-width: 600px;
   height: 60vh;
-  max-height: 400px;
+  max-height: 420px;
   margin: 20px auto;
-  border: 2px solid #888;
   position: relative;
   overflow: hidden;
-  background-color: #2a2a2a; /* cinza confortável */
+  background-color: transparent; /* remove fundo */
+  border: none;                  /* remove retângulo */
 }
-
 /* Boneco */
 #character {
   position: absolute;
