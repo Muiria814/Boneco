@@ -30,10 +30,6 @@ botao.addEventListener("click", () => {
     contador.textContent = passos;
     localStorage.setItem("passos", passos);
 
-    // animação do boneco
-    poseAtual = (poseAtual + 1) % poses.length;
-    boneco.textContent = poses[poseAtual];
-
     // movimento no ecrã
     posX += 5;
     boneco.style.left = posX + "px";
@@ -57,7 +53,6 @@ resetBtn.addEventListener("click", () => {
 
   posX = 0;
   boneco.style.left = "0px";
-  boneco.textContent = "🚶‍♂️";
-
+  
   botao.disabled = false;
 });
