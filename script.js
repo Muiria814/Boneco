@@ -24,6 +24,14 @@ loginBtn.addEventListener("click", () => {
   }
 });
 
+// ====== LOGOUT ======
+const logoutBtn = document.getElementById("logoutBtn");
+
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("logado");
+  location.reload();
+});
+
 // ====== CONFIGURAÇÕES ======
 const DOGE_POR_PASSOS = 10;
 const MIN_SAQUE = 50;
