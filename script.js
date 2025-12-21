@@ -73,4 +73,25 @@ resetBtn.addEventListener("click", () => {
   boneco.style.left = "0px";
   
   botao.disabled = false;
+
+  const convertBtn = document.getElementById("convertBtn");
+
+convertBtn.addEventListener("click", () => {
+  // passos ainda não convertidos
+  const passosNovos = passos - passosConvertidos;
+
+  if (passosNovos <= 0) return;
+
+  // conversão
+  const dogeGanhos = passosNovos / DOGE_POR_PASSOS;
+  doge += dogeGanhos;
+
+  // atualizar valores
+  passosConvertidos = passos;
+  dogeEl.textContent = doge.toFixed(2);
+
+  // guardar
+  localStorage.setItem("doge", doge);
+  localStorage.setItem("passosConvertidos", passosConvertidos);
+
 });
