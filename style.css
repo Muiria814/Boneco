@@ -63,3 +63,10 @@ button:disabled {
   font-weight: bold;
   color: #f5c518; /* dourado tipo DOGE */
 }
+
+/* ===== TÍTULO LOGIN ===== */
+.login-container p {
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
