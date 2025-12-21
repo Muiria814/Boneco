@@ -1,3 +1,29 @@
+// ====== LOGIN ======
+const PASSWORD_CORRETA = "Professor2024#";
+
+const loginScreen = document.getElementById("login-screen");
+const app = document.getElementById("app");
+const passwordInput = document.getElementById("passwordInput");
+const loginBtn = document.getElementById("loginBtn");
+const loginMessage = document.getElementById("loginMessage");
+
+// verificar se já está logado
+if (localStorage.getItem("logado") === "true") {
+  loginScreen.style.display = "none";
+  app.style.display = "block";
+}
+
+loginBtn.addEventListener("click", () => {
+  if (passwordInput.value === PASSWORD_CORRETA) {
+    localStorage.setItem("logado", "true");
+    loginScreen.style.display = "none";
+    app.style.display = "block";
+  } else {
+    loginMessage.style.color = "red";
+    loginMessage.textContent = "Palavra-passe incorreta ❌";
+  }
+});
+
 // ====== CONFIGURAÇÕES ======
 const DOGE_POR_PASSOS = 10;
 const MIN_SAQUE = 50;
