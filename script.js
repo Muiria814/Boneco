@@ -154,7 +154,172 @@ withdrawBtn.addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch(`${https://backend-z7zy.onrender.com}/withdraw`, {
+const BACKEND_URL = "https://backend-z7zy.onrender.com";
+
+// ====== LOGIN ======
+const PASSWORD_CORRETA = "Professor2024#";
+
+const loginScreen = document.getElementById("login-screen");
+const app = document.getElementById("app");
+const passwordInput = document.getElementById("passwordInput");
+const loginBtn = document.getElementById("loginBtn");
+const loginMessage = document.getElementById("loginMessage");
+
+if (localStorage.getItem("logado") === "true") {
+  loginScreen.style.display = "none";
+  app.style.display = "block";
+}
+
+loginBtn.addEventListener("click", () => {
+  if (passwordInput.value === PASSWORD_CORRETA) {
+    localStorage.setItem("logado", "true");
+    loginScreen.style.display = "none";
+    app.style.display = "block";
+  } else {
+    loginMessage.style.color = "red";
+    loginMessage.textContent = "Palavra-passe incorreta ❌";
+  }
+});
+
+// ====== LOGOUT ======
+const logoutBtn = document.getElementById("logoutBtn");
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("logado");
+  location.reload();
+});
+
+// ====== CONFIGURAÇÕES ======
+const DOGE_POR_PASSOS = 10;
+const MIN_SAQUE = 50;
+
+// ====== ESTADO ======
+let passos = 0;
+let doge = 0;
+let intervalo = null;
+let andando = false;
+let posX = 0;
+
+// ====== ELEMENTOS ======
+const contador = document.getElementById("steps");
+const boneco = document.getElementById("character");
+const botao = document.getElementById("startBtn");
+const resetBtn = document.getElementById("resetBtn");
+const dogeEl = document.getElementById("doge");
+const convertBtn = document.getElementById("convertBtn");
+
+const withdrawBtn = document.getElementById("withdraw-button");
+const dogeAddressInput = document.getElementById("doge-address");
+const withdrawMessage = document.getElementById("withdraw-message");
+
+// ====== INICIALIZAÇÃO ======
+async function init() {
+  loginMessage.textContent = "Carregando dados do backend...";
+  try {
+    const passosRes = await fetch(`${BACKEND_URL}/passos`);
+    const passosData = await passosRes.json();
+    passos = passosData.passos || 0;
+  } catch (err) {
+    loginMessage.textContent = "Erro ao buscar passos do backend";
+    console.log(err);
+  }
+
+  try {
+    const saldoRes = await fetch(`${BACKEND_URL}/saldo`);
+    const saldoData = await saldoRes.json();
+    doge = saldoData.saldo || 0;
+  } catch (err) {
+    loginMessage.textContent = "Erro ao buscar saldo do backend";
+    console.log(err);
+  }
+
+  contador.textContent = passos;
+  dogeEl.textContent = doge.toFixed(2);
+  loginMessage.textContent = "";
+}
+
+init();
+
+// ====== INICIAR CAMINHADA ======
+botao.addEventListener("click", () => {
+  if (andando) return;
+
+  andando = true;
+  botao.disabled = true;
+  loginMessage.textContent = "";
+
+  intervalo = setInterval(() => {
+    passos++;
+    contador.textContent = passos;
+
+    // movimento do boneco
+    posX += 5;
+    boneco.style.left = posX + "px";
+    if (posX > 260) posX = 0;
+
+    // enviar passos ao backend sem travar
+    fetch(`${BACKEND_URL}/passos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passos })
+    }).catch(err => {
+      loginMessage.textContent = "Erro ao enviar passos ao backend";
+      console.log(err);
+    });
+  }, 500);
+});
+
+// ====== PAUSAR ======
+resetBtn.addEventListener("click", () => {
+  clearInterval(intervalo);
+  intervalo = null;
+  andando = false;
+  botao.disabled = false;
+});
+
+// ====== CONVERTER PASSOS EM DOGE ======
+convertBtn.addEventListener("click", async () => {
+  if (passos <= 0) return;
+
+  loginMessage.textContent = "Convertendo passos em DOGE...";
+  try {
+    const res = await fetch(`${BACKEND_URL}/convert`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passos })
+    });
+    const data = await res.json();
+    doge = data.saldo || doge;
+    dogeEl.textContent = doge.toFixed(2);
+
+    passos = 0;
+    contador.textContent = passos;
+    loginMessage.textContent = "Conversão concluída ✅";
+  } catch (err) {
+    loginMessage.textContent = "Erro ao converter passos";
+    console.log(err);
+  }
+});
+
+// ====== LEVANTAR DOGE ======
+withdrawBtn.addEventListener("click", async () => {
+  const address = dogeAddressInput.value.trim();
+
+  if (!address) {
+    withdrawMessage.style.color = "red";
+    withdrawMessage.textContent = "Insira um endereço DOGE válido.";
+    return;
+  }
+
+  if (doge < MIN_SAQUE) {
+    withdrawMessage.style.color = "red";
+    withdrawMessage.textContent =
+      `Mínimo para levantamento: ${MIN_SAQUE} DOGE.`;
+    return;
+  }
+
+  withdrawMessage.textContent = "Processando levantamento...";
+  try {
+    const res = await fetch(`${BACKEND_URL}/withdraw`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ address, amount: doge })
@@ -168,10 +333,13 @@ withdrawBtn.addEventListener("click", async () => {
       doge = 0;
       dogeEl.textContent = "0.00";
       dogeAddressInput.value = "";
+    } else {
+      withdrawMessage.style.color = "red";
+      withdrawMessage.textContent = "Erro ao processar levantamento";
     }
   } catch (err) {
-    console.log("Erro ao levantar DOGE:", err);
     withdrawMessage.style.color = "red";
-    withdrawMessage.textContent = "Erro ao processar levantamento.";
+    withdrawMessage.textContent = "Erro ao conectar com backend";
+    console.log(err);
   }
 });
