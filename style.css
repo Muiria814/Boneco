@@ -37,17 +37,17 @@ h1 {
 
 /* Texto de passos */
 p {
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 50px;
+  font-weight: 700;
   color: #eaeaea;
 }
 
 /* Botões grandes (mobile friendly) */
 button {
-  font-size: 26px;
-  padding: 18px 34px;
-  margin: 10px;
-  border-radius: 10px;
+  font-size: 56px;
+  padding: 28px 44px;
+  margin: 20px;
+  border-radius: 20px;
   border: none;
   background-color: #3a6ea5; /* azul escuro */
   color: #ffffff;
@@ -59,7 +59,7 @@ button:disabled {
 }
 
 #doge {
-  font-size: 32px;
+  font-size: 50px;
   font-weight: bold;
   color: #f5c518; /* dourado tipo DOGE */
 }
