@@ -154,11 +154,32 @@ const ultimaSaida = localStorage.getItem("ultimaSaida");
 
 if (ultimaSaida) {
   const agora = Date.now();
+  // ===============================
+// CARREGAR DADOS GUARDADOS
+// ===============================
+let passos = parseInt(localStorage.getItem("passos")) || 0;
+let saldoDOGE = parseFloat(localStorage.getItem("saldoDOGE")) || 0;
+let passosConvertidos = parseInt(localStorage.getItem("passosConvertidos")) || 0;
+let intervalo = null;
+let andando = false;
+let posX = 0;
+
+// ===============================
+// CONFIGURAÇÕES
+// ===============================
+const PASSOS_POR_DOGE = 10;   // 10 passos = 1 DOGE
+const PASSOS_POR_SEGUNDO = 1;
+
+// ===============================
+// SIMULAÇÃO FORA DO SITE
+// ===============================
+const ultimaSaida = localStorage.getItem("ultimaSaida");
+if (ultimaSaida) {
+  const agora = Date.now();
   const segundosFora = Math.floor((agora - ultimaSaida) / 1000);
   const passosSimulados = segundosFora * PASSOS_POR_SEGUNDO;
 
   passos += passosSimulados;
-
   localStorage.setItem("passos", passos);
   localStorage.removeItem("ultimaSaida");
 }
@@ -176,12 +197,24 @@ const botao = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 const convertBtn = document.getElementById("convertBtn");
 const dogeEl = document.getElementById("doge");
+const withdrawBtn = document.getElementById("withdraw-button");
+const withdrawMessage = document.getElementById("withdraw-message");
+const dogeAddressInput = document.getElementById("doge-address");
 
 // ===============================
-// MOSTRAR VALORES AO CARREGAR
+// FUNÇÕES DE ATUALIZAÇÃO
 // ===============================
-contador.textContent = passos;
-dogeEl.textContent = saldoDOGE.toFixed(2);
+function atualizarPassosDisplay() {
+  contador.textContent = passos;
+}
+
+function atualizarSaldoDisplay() {
+  dogeEl.textContent = saldoDOGE.toFixed(2);
+}
+
+// Inicializa display
+atualizarPassosDisplay();
+atualizarSaldoDisplay();
 
 // ===============================
 // INICIAR CAMINHADA
@@ -194,12 +227,11 @@ botao.addEventListener("click", () => {
 
   intervalo = setInterval(() => {
     passos++;
-    contador.textContent = passos;
     localStorage.setItem("passos", passos);
+    atualizarPassosDisplay();
 
     posX += 5;
     boneco.style.left = posX + "px";
-
     if (posX > 260) posX = 0;
   }, 500);
 });
@@ -218,11 +250,10 @@ resetBtn.addEventListener("click", () => {
 });
 
 // ===============================
-// CONVERTER PARA DOGE (BOTÃO)
+// CONVERTER PASSOS EM DOGE
 // ===============================
 convertBtn.addEventListener("click", () => {
   const passosDisponiveis = passos - passosConvertidos;
-
   if (passosDisponiveis < PASSOS_POR_DOGE) {
     alert("Ainda não tens passos suficientes para converter.");
     return;
@@ -237,16 +268,16 @@ convertBtn.addEventListener("click", () => {
   localStorage.setItem("saldoDOGE", saldoDOGE);
   localStorage.setItem("passosConvertidos", passosConvertidos);
 
-  dogeEl.textContent = saldoDOGE.toFixed(2);
+  atualizarPassosDisplay();
+  atualizarSaldoDisplay();
 });
 
 // ===============================
-// BOTÃO "LEVANTAR"
+// BOTÃO LEVANTAR
 // ===============================
-const withdrawBtn = document.getElementById("withdraw-button");
 if (withdrawBtn) {
-  withdrawBtn.addEventListener("click", function() {
-    const address = document.getElementById("doge-address").value.trim();
+  withdrawBtn.addEventListener("click", () => {
+    const address = dogeAddressInput.value.trim();
 
     if (!address) {
       alert("Por favor, digite um endereço DOGE válido.");
@@ -258,20 +289,21 @@ if (withdrawBtn) {
       return;
     }
 
-    // Saldo antes de zerar para mostrar na mensagem
+    // Saldo antes de zerar
     const saldoAntes = saldoDOGE;
 
-    // Zera o saldo após "levantar"
+    // Zera saldo e atualiza localStorage
     saldoDOGE = 0;
     localStorage.setItem("saldoDOGE", saldoDOGE);
 
-    // Atualiza display do saldo
-    dogeEl.textContent = saldoDOGE.toFixed(2);
+    atualizarSaldoDisplay();
 
     // Mensagem de confirmação
-    document.getElementById("withdraw-message").innerText = `Você levantou ${saldoAntes} DOGE para o endereço ${address}!`;
-
-    // Limpa o campo do endereço
-    document.getElementById("doge-address").value = "";
-  });
+    if (withdrawMessage) {
+      withdrawMessage.textContent = `Você levantou ${saldoAntes} DOGE para o endereço ${address}!`;
     }
+
+    // Limpa campo
+    dogeAddressInput.value = "";
+  });
+                            }
