@@ -114,4 +114,36 @@ convertBtn.addEventListener("click", () => {
   localStorage.setItem("passosConvertidos", passosConvertidos);
 
   dogeEl.textContent = saldoDOGE.toFixed(2);
+// Botão "Levantar" - envia saldo DOGE para o endereço digitado
+document.getElementById("withdraw-button").addEventListener("click", function() {
+  const address = document.getElementById("doge-address").value.trim();
+  const saldoDoge = parseFloat(localStorage.getItem("saldoDoge")) || 0;
+
+  if (!address) {
+    alert("Por favor, digite um endereço DOGE válido.");
+    return;
+  }
+
+  if (saldoDoge <= 0) {
+    alert("Você não tem DOGE para levantar.");
+    return;
+  }
+
+  // Zera o saldo após "levantar"
+  localStorage.setItem("saldoDoge", 0);
+
+  // Mostra mensagem de confirmação no site
+  document.getElementById("withdraw-message").innerText = `Você levantou ${saldoDoge} DOGE para o endereço ${address}!`;
+
+  // Limpa o campo do endereço
+  document.getElementById("doge-address").value = "";
+
+  // Atualiza o saldo na tela
+  if (typeof atualizarSaldoDisplay === "function") {
+    atualizarSaldoDisplay();
+  } else {
+    // Caso não exista a função, atualiza diretamente
+    document.getElementById("saldoDoge").innerText = 0;
+  }
+  
 });
