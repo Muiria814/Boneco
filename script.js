@@ -1,26 +1,21 @@
-// carregar passos guardados
+// ====== CONFIGURAÇÕES ======
+const DOGE_POR_PASSOS = 10;
+const MIN_SAQUE = 50;
+
+// ====== ESTADO (localStorage) ======
 let passos = localStorage.getItem("passos")
   ? parseInt(localStorage.getItem("passos"))
+  : 0;
+
+let doge = localStorage.getItem("doge")
+  ? parseFloat(localStorage.getItem("doge"))
   : 0;
 
 let intervalo = null;
 let andando = false;
 let posX = 0;
 
-// carregar DOGE guardado
-let doge = localStorage.getItem("doge")
-  ? parseFloat(localStorage.getItem("doge"))
-  : 0;
-
-// guardar quantos passos já foram convertidos
-let passosConvertidos = localStorage.getItem("passosConvertidos")
-  ? parseInt(localStorage.getItem("passosConvertidos"))
-  : 0;
-
-const DOGE_POR_PASSOS = 10;
-const MIN_SAQUE = 50;
-
-// elementos
+// ====== ELEMENTOS ======
 const contador = document.getElementById("steps");
 const boneco = document.getElementById("character");
 const botao = document.getElementById("startBtn");
@@ -32,11 +27,11 @@ const withdrawBtn = document.getElementById("withdraw-button");
 const dogeAddressInput = document.getElementById("doge-address");
 const withdrawMessage = document.getElementById("withdraw-message");
 
-// mostrar valores ao carregar
+// ====== INICIALIZAÇÃO ======
 contador.textContent = passos;
 dogeEl.textContent = doge.toFixed(2);
 
-// iniciar caminhada
+// ====== INICIAR CAMINHADA ======
 botao.addEventListener("click", () => {
   if (andando) return;
 
@@ -44,7 +39,6 @@ botao.addEventListener("click", () => {
   botao.disabled = true;
 
   intervalo = setInterval(() => {
-    // contador de passos
     passos++;
     contador.textContent = passos;
     localStorage.setItem("passos", passos);
@@ -52,14 +46,11 @@ botao.addEventListener("click", () => {
     // movimento do boneco
     posX += 5;
     boneco.style.left = posX + "px";
-
-    if (posX > 260) {
-      posX = 0;
-    }
+    if (posX > 260) posX = 0;
   }, 500);
 });
 
-// parar (pausa)
+// ====== PAUSAR ======
 resetBtn.addEventListener("click", () => {
   clearInterval(intervalo);
   intervalo = null;
@@ -67,23 +58,24 @@ resetBtn.addEventListener("click", () => {
   botao.disabled = false;
 });
 
-// converter passos em DOGE
+// ====== CONVERTER PASSOS EM DOGE ======
 convertBtn.addEventListener("click", () => {
-  const passosNovos = passos - passosConvertidos;
-  if (passosNovos <= 0) return;
+  const dogeGanhos = Math.floor(passos / DOGE_POR_PASSOS);
 
-  const dogeGanhos = passosNovos / DOGE_POR_PASSOS;
+  if (dogeGanhos <= 0) return;
+
+  // adiciona DOGE
   doge += dogeGanhos;
-
-  passosConvertidos = passos;
-
   dogeEl.textContent = doge.toFixed(2);
-
   localStorage.setItem("doge", doge);
-  localStorage.setItem("passosConvertidos", passosConvertidos);
+
+  // 🔥 REINICIA PASSOS (como pediste)
+  passos = 0;
+  contador.textContent = passos;
+  localStorage.setItem("passos", passos);
 });
 
-// levantar DOGE (simulação)
+// ====== LEVANTAR DOGE (SIMULAÇÃO) ======
 withdrawBtn.addEventListener("click", () => {
   const address = dogeAddressInput.value.trim();
 
