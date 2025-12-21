@@ -1,5 +1,4 @@
 // carregar passos guardados
-// carregar passos guardados
 let passos = localStorage.getItem("passos")
   ? parseInt(localStorage.getItem("passos"))
   : 0;
@@ -7,8 +6,15 @@ let passos = localStorage.getItem("passos")
 let intervalo = null;
 let andando = false;
 let posX = 0;
+
+// carregar DOGE guardado
 let doge = localStorage.getItem("doge")
   ? parseFloat(localStorage.getItem("doge"))
+  : 0;
+
+// guardar quantos passos já foram convertidos
+let passosConvertidos = localStorage.getItem("passosConvertidos")
+  ? parseInt(localStorage.getItem("passosConvertidos"))
   : 0;
 
 const DOGE_POR_PASSOS = 10;
@@ -19,8 +25,9 @@ const boneco = document.getElementById("character");
 const botao = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 const dogeEl = document.getElementById("doge");
+const convertBtn = document.getElementById("convertBtn");
 
-// mostrar passos ao carregar
+// mostrar valores ao carregar
 contador.textContent = passos;
 dogeEl.textContent = doge.toFixed(2);
 
@@ -32,66 +39,42 @@ botao.addEventListener("click", () => {
   botao.disabled = true;
 
   intervalo = setInterval(() => {
-    doge = passos / DOGE_POR_PASSOS;
-dogeEl.textContent = doge.toFixed(2);
-localStorage.setItem("doge", doge);
-    
-    // contador
+    // contador de passos
     passos++;
     contador.textContent = passos;
     localStorage.setItem("passos", passos);
 
-    // movimento no ecrã
+    // movimento do boneco
     posX += 5;
     boneco.style.left = posX + "px";
 
     if (posX > 260) {
       posX = 0;
     }
-
   }, 500);
 });
 
-// parar / reset
+// parar (pausa)
 resetBtn.addEventListener("click", () => {
   clearInterval(intervalo);
   intervalo = null;
   andando = false;
-
-  resetBtn.addEventListener("click", () => {
-  clearInterval(intervalo);
-  intervalo = null;
-  andando = false;
-
-  // NÃO mexe nos passos
-  // NÃO reseta contador
-  // apenas pausa
-
   botao.disabled = false;
 });
-  posX = 0;
-  boneco.style.left = "0px";
-  
-  botao.disabled = false;
 
-  const convertBtn = document.getElementById("convertBtn");
-
+// converter passos em DOGE
 convertBtn.addEventListener("click", () => {
-  // passos ainda não convertidos
   const passosNovos = passos - passosConvertidos;
 
   if (passosNovos <= 0) return;
 
-  // conversão
   const dogeGanhos = passosNovos / DOGE_POR_PASSOS;
   doge += dogeGanhos;
 
-  // atualizar valores
   passosConvertidos = passos;
+
   dogeEl.textContent = doge.toFixed(2);
 
-  // guardar
   localStorage.setItem("doge", doge);
   localStorage.setItem("passosConvertidos", passosConvertidos);
-
 });
