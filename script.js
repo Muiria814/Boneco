@@ -18,6 +18,7 @@ let passosConvertidos = localStorage.getItem("passosConvertidos")
   : 0;
 
 const DOGE_POR_PASSOS = 10;
+const MIN_SAQUE = 50;
 
 // elementos
 const contador = document.getElementById("steps");
@@ -26,6 +27,10 @@ const botao = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 const dogeEl = document.getElementById("doge");
 const convertBtn = document.getElementById("convertBtn");
+
+const withdrawBtn = document.getElementById("withdraw-button");
+const dogeAddressInput = document.getElementById("doge-address");
+const withdrawMessage = document.getElementById("withdraw-message");
 
 // mostrar valores ao carregar
 contador.textContent = passos;
@@ -65,7 +70,6 @@ resetBtn.addEventListener("click", () => {
 // converter passos em DOGE
 convertBtn.addEventListener("click", () => {
   const passosNovos = passos - passosConvertidos;
-
   if (passosNovos <= 0) return;
 
   const dogeGanhos = passosNovos / DOGE_POR_PASSOS;
@@ -77,3 +81,32 @@ convertBtn.addEventListener("click", () => {
 
   localStorage.setItem("doge", doge);
   localStorage.setItem("passosConvertidos", passosConvertidos);
+});
+
+// levantar DOGE (simulação)
+withdrawBtn.addEventListener("click", () => {
+  const address = dogeAddressInput.value.trim();
+
+  if (!address) {
+    withdrawMessage.style.color = "red";
+    withdrawMessage.textContent = "Insira um endereço DOGE válido.";
+    return;
+  }
+
+  if (doge < MIN_SAQUE) {
+    withdrawMessage.style.color = "red";
+    withdrawMessage.textContent =
+      `Mínimo para levantamento: ${MIN_SAQUE} DOGE.`;
+    return;
+  }
+
+  withdrawMessage.style.color = "green";
+  withdrawMessage.textContent =
+    `Levantamento de ${doge.toFixed(2)} DOGE enviado para ${address}`;
+
+  doge = 0;
+  dogeEl.textContent = "0.00";
+  localStorage.setItem("doge", doge);
+
+  dogeAddressInput.value = "";
+});
