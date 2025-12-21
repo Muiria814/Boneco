@@ -11,7 +11,7 @@ let doge = localStorage.getItem("doge")
   ? parseFloat(localStorage.getItem("doge"))
   : 0;
 
-const DOGE_POR_PASSOS = 1000;
+const DOGE_POR_PASSOS = 10;
 
 // elementos
 const contador = document.getElementById("steps");
