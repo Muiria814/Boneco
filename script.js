@@ -59,7 +59,7 @@ const withdrawMessage = document.getElementById("withdraw-message");
 async function init() {
   // buscar passos do backend
   try {
-    const passosRes = await fetch(`${https://backend-z7zy.onrender.com}/passos`);
+    const passosRes = await fetch(`${BACKEND_URL}/passos`);
     const passosData = await passosRes.json();
     passos = passosData.passos || 0;
   } catch (err) {
@@ -68,7 +68,7 @@ async function init() {
 
   // buscar saldo DOGE do backend
   try {
-    const saldoRes = await fetch(`${https://backend-z7zy.onrender.com}/saldo`);
+    const saldoRes = await fetch(`${BACKEND_URL}/saldo`);
     const saldoData = await saldoRes.json();
     doge = saldoData.saldo || 0;
   } catch (err) {
@@ -93,7 +93,7 @@ botao.addEventListener("click", () => {
 
     // enviar passos ao backend
     try {
-      await fetch(`${https://backend-z7zy.onrender.com}/passos`, {
+      await fetch(`${BACKEND_URL}/passos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ passos })
@@ -120,7 +120,7 @@ resetBtn.addEventListener("click", () => {
 // ====== CONVERTER PASSOS EM DOGE ======
 convertBtn.addEventListener("click", async () => {
   try {
-    const res = await fetch(`${https://backend-z7zy.onrender.com}/convert`, {
+    const res = await fetch(`${BACKEND_URL}/convert`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ passos })
