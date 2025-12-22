@@ -151,5 +151,33 @@ withdrawBtn.addEventListener("click", async () => {
     withdrawMessage.textContent =
       `Mínimo para levantamento: ${MIN_SAQUE} DOGE.`;
     return;
-    
-  });
+  }
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/withdraw`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        address,
+        amount: doge
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      doge = 0;
+      dogeEl.textContent = doge.toFixed(2);
+      withdrawMessage.style.color = "green";
+      withdrawMessage.textContent = "Levantamento solicitado com sucesso ✅";
+      dogeAddressInput.value = "";
+    } else {
+      withdrawMessage.style.color = "red";
+      withdrawMessage.textContent = data.message || "Erro no levantamento.";
+    }
+  } catch (err) {
+    withdrawMessage.style.color = "red";
+    withdrawMessage.textContent = "Erro ao comunicar com o servidor.";
+    console.log(err);
+  }
+});
