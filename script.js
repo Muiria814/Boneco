@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginBtn = document.getElementById("loginBtn");
   const loginMessage = document.getElementById("loginMessage");
 
+  // segurança extra
+  if (!loginScreen || !app || !loginBtn) {
+    console.error("Erro: elementos de login não encontrados");
+    return;
+  }
+
+  // login automático se já estiver logado
   if (localStorage.getItem("logado") === "true") {
     loginScreen.style.display = "none";
     app.style.display = "block";
@@ -22,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("logado", "true");
       loginScreen.style.display = "none";
       app.style.display = "block";
+      loginMessage.textContent = "";
     } else {
       loginMessage.style.color = "red";
       loginMessage.textContent = "Palavra-passe incorreta ❌";
