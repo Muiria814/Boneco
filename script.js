@@ -100,7 +100,7 @@ botao.addEventListener("click", () => {
       await fetch(`${BACKEND_URL}/passos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ passos })
+        body: JSON.stringify({ novosPassos: 1 })
       });
     } catch (err) {
       console.log("Erro ao salvar passos:", err);
@@ -151,12 +151,22 @@ withdrawBtn.addEventListener("click", async () => {
     const data = await res.json();
 
     if (data.success) {
-      doge = 0;
-      dogeEl.textContent = doge.toFixed(2);
-      withdrawMessage.style.color = "green";
-      withdrawMessage.textContent = "Levantamento solicitado com sucesso ✅";
-      dogeAddressInput.value = "";
-    } else {
+
+  // buscar saldo real do backend
+  const saldoRes = await fetch(`${BACKEND_URL}/saldo`);
+  const saldoData = await saldoRes.json();
+
+  doge = saldoData.saldo;
+  passos = saldoData.passos;
+
+  dogeEl.textContent = doge.toFixed(2);
+  contador.textContent = passos;
+
+  withdrawMessage.style.color = "green";
+  withdrawMessage.textContent = "Levantamento solicitado com sucesso ✅";
+  dogeAddressInput.value = "";
+    }
+   } else {
       withdrawMessage.style.color = "red";
       withdrawMessage.textContent = data.message || "Erro no levantamento.";
     }
