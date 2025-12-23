@@ -164,8 +164,8 @@ withdrawBtn.addEventListener("click", async () => {
 
   withdrawMessage.style.color = "green";
   withdrawMessage.textContent = "Levantamento solicitado com sucesso ✅";
-  dogeAddressInput.value = "";
-    }
+ 
+      dogeAddressInput.value = "";
    } else {
       withdrawMessage.style.color = "red";
       withdrawMessage.textContent = data.message || "Erro no levantamento.";
