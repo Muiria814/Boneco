@@ -2,29 +2,33 @@ const BACKEND_URL = "https://backend-z7zy.onrender.com"; // <-- coloque sua URL 
 
 // ====== LOGIN ======
 const PASSWORD_CORRETA = "Professor2024#";
+document.addEventListener("DOMContentLoaded", () => {
 
-const loginScreen = document.getElementById("login-screen");
-const app = document.getElementById("app");
-const passwordInput = document.getElementById("passwordInput");
-const loginBtn = document.getElementById("loginBtn");
-const loginMessage = document.getElementById("loginMessage");
+  const PASSWORD_CORRETA = "Professor2024#";
 
-if (localStorage.getItem("logado") === "true") {
-  loginScreen.style.display = "none";
-  app.style.display = "block";
-}
+  const loginScreen = document.getElementById("login-screen");
+  const app = document.getElementById("app");
+  const passwordInput = document.getElementById("passwordInput");
+  const loginBtn = document.getElementById("loginBtn");
+  const loginMessage = document.getElementById("loginMessage");
 
-loginBtn.addEventListener("click", () => {
-  if (passwordInput.value === PASSWORD_CORRETA) {
-    localStorage.setItem("logado", "true");
+  if (localStorage.getItem("logado") === "true") {
     loginScreen.style.display = "none";
     app.style.display = "block";
-  } else {
-    loginMessage.style.color = "red";
-    loginMessage.textContent = "Palavra-passe incorreta ❌";
   }
-});
 
+  loginBtn.addEventListener("click", () => {
+    if (passwordInput.value === PASSWORD_CORRETA) {
+      localStorage.setItem("logado", "true");
+      loginScreen.style.display = "none";
+      app.style.display = "block";
+    } else {
+      loginMessage.style.color = "red";
+      loginMessage.textContent = "Palavra-passe incorreta ❌";
+    }
+  });
+
+});
 // ====== LOGOUT ======
 const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", () => {
