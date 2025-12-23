@@ -30,6 +30,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("logado");
   location.reload();
+  
 });
 
 // ====== CONFIGURAÇÕES ======
@@ -37,8 +38,8 @@ const DOGE_POR_PASSOS = 10;
 const MIN_SAQUE = 50;
 
 // ====== ESTADO ======
-let passos = 0;
-let doge = 0;
+let passos = parseInt(localStorage.getItem("passos")) || 0;
+let doge = parseFloat(localStorage.getItem("doge")) || 0;
 let intervalo = null;
 let andando = false;
 let posX = 0;
@@ -50,6 +51,8 @@ const botao = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 const dogeEl = document.getElementById("doge");
 const convertBtn = document.getElementById("convertBtn");
+contador.textContent = passos;
+dogeEl.textContent = doge.toFixed(2);
 
 const withdrawBtn = document.getElementById("withdraw-button");
 const dogeAddressInput = document.getElementById("doge-address");
@@ -89,6 +92,7 @@ botao.addEventListener("click", () => {
 
   intervalo = setInterval(async () => {
     passos++;
+    localStorage.setItem("passos", passos);
     contador.textContent = passos;
 
     // enviar passos ao backend
@@ -129,6 +133,8 @@ convertBtn.addEventListener("click", async () => {
   // reset passos
   passos = 0;
   contador.textContent = passos;
+  localStorage.setItem("doge", doge);
+localStorage.setItem("passos", 0);
 
   // guardar no backend (opcional)
   try {
