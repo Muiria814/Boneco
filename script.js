@@ -121,39 +121,6 @@ resetBtn.addEventListener("click", () => {
   botao.disabled = false;
 });
 
-// ====== CONVERTER PASSOS EM DOGE ======
-convertBtn.addEventListener("click", async () => {
-  if (passos < DOGE_POR_PASSOS) return;
-
-  const dogeGanho = passos / DOGE_POR_PASSOS;
-  doge += dogeGanho;
-
-  dogeEl.textContent = doge.toFixed(2);
-
-  // reset passos
-  passos = 0;
-  contador.textContent = passos;
-  localStorage.setItem("doge", doge);
-localStorage.setItem("passos", 0);
-
-  // guardar no backend (opcional)
-  try {
-    await fetch(`${BACKEND_URL}/saldo`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ saldo: doge })
-    });
-
-    await fetch(`${BACKEND_URL}/passos`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ passos: 0 })
-    });
-  } catch (err) {
-    console.log("Erro ao salvar conversão:", err);
-  }
-});
-
 // ====== LEVANTAR DOGE ======
 withdrawBtn.addEventListener("click", async () => {
   const address = dogeAddressInput.value.trim();
