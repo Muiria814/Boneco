@@ -37,12 +37,44 @@ logoutBtn.addEventListener("click", () => {
 const DOGE_POR_PASSOS = 10;
 const MIN_SAQUE = 50;
 
-// ====== ESTADO ======
+// ======== VARIÁVEIS INICIAIS ========
 let passos = parseInt(localStorage.getItem("passos")) || 0;
-let doge = parseFloat(localStorage.getItem("doge")) || 0;
-let intervalo = null;
-let andando = false;
-let posX = 0;
+let saldoDOGE = parseInt(localStorage.getItem("saldoDOGE")) || 0;
+const taxa = 10; // 10 passos = 1 DOGE
+
+const contadorPassosEl = document.getElementById("contadorPassos");
+const saldoEl = document.getElementById("saldo");
+
+// Atualiza o display inicial
+contadorPassosEl.textContent = passos;
+saldoEl.textContent = saldoDOGE + " DOGE";
+
+// ======== FUNÇÃO PARA ATUALIZAR SALDO ========
+function atualizarSaldo() {
+  saldoDOGE = Math.floor(passos / taxa);
+  saldoEl.textContent = saldoDOGE + " DOGE";
+
+  // Salva no localStorage
+  localStorage.setItem("passos", passos);
+  localStorage.setItem("saldoDOGE", saldoDOGE);
+
+  // Opcional: envia ao backend para persistência
+  fetch("https://backend-z7zy.onrender.com/atualizarSaldo", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ saldoDOGE })
+  }).catch(err => console.log("Erro ao atualizar backend:", err));
+}
+
+// ======== FUNÇÃO PARA SIMULAR PASSO ========
+function adicionarPasso() {
+  passos++;
+  contadorPassosEl.textContent = passos;
+  atualizarSaldo();
+}
+
+// Botão de teste
+document.getElementById("adicionarPassoBtn").addEventListener("click", adicionarPasso);
 
 // ====== ELEMENTOS ======
 const contador = document.getElementById("steps");
