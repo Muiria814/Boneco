@@ -40,9 +40,14 @@ const MIN_SAQUE = 50;
 // ====== ESTADO ======
 let passos = parseInt(localStorage.getItem("passos")) || 0;
 let doge = parseFloat(localStorage.getItem("doge")) || 0;
-let intervalo = null;
-let andando = false;
-let posX = 0;
+
+// Atualizar display inicial
+function atualizarDisplay() {
+  contador.textContent = passos;
+  dogeEl.textContent = doge.toFixed(2);
+}
+
+atualizarDisplay();
 
 // ====== ELEMENTOS ======
 const contador = document.getElementById("steps");
@@ -121,7 +126,6 @@ resetBtn.addEventListener("click", () => {
   botao.disabled = false;
 });
 
-// ====== LEVANTAR DOGE ======
 withdrawBtn.addEventListener("click", async () => {
   const address = dogeAddressInput.value.trim();
 
@@ -133,8 +137,7 @@ withdrawBtn.addEventListener("click", async () => {
 
   if (doge < MIN_SAQUE) {
     withdrawMessage.style.color = "red";
-    withdrawMessage.textContent =
-      `Mínimo para levantamento: ${MIN_SAQUE} DOGE.`;
+    withdrawMessage.textContent = `Mínimo para levantamento: ${MIN_SAQUE} DOGE.`;
     return;
   }
 
@@ -142,17 +145,16 @@ withdrawBtn.addEventListener("click", async () => {
     const res = await fetch(`${BACKEND_URL}/withdraw`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        address,
-        amount: doge
-      })
+      body: JSON.stringify({ address, amount: doge })
     });
 
     const data = await res.json();
 
     if (data.success) {
       doge = 0;
-      dogeEl.textContent = doge.toFixed(2);
+      localStorage.setItem("doge", doge);
+      atualizarDisplay();
+
       withdrawMessage.style.color = "green";
       withdrawMessage.textContent = "Levantamento solicitado com sucesso ✅";
       dogeAddressInput.value = "";
