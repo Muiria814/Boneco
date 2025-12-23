@@ -35,8 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
       loginMessage.textContent = "Palavra-passe incorreta ❌";
     }
   });
-
-});
+  
 // ====== LOGOUT ======
 const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", () => {
