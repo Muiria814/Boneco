@@ -119,20 +119,32 @@ resetBtn.addEventListener("click", () => {
 
 // ====== CONVERTER PASSOS EM DOGE ======
 convertBtn.addEventListener("click", async () => {
+  if (passos < DOGE_POR_PASSOS) return;
+
+  const dogeGanho = passos / DOGE_POR_PASSOS;
+  doge += dogeGanho;
+
+  dogeEl.textContent = doge.toFixed(2);
+
+  // reset passos
+  passos = 0;
+  contador.textContent = passos;
+
+  // guardar no backend (opcional)
   try {
-    const res = await fetch(`${BACKEND_URL}/convert`, {
+    await fetch(`${BACKEND_URL}/saldo`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ passos })
+      body: JSON.stringify({ saldo: doge })
     });
-    const data = await res.json();
-    doge = data.saldo || doge;
-    dogeEl.textContent = doge.toFixed(2);
 
-    passos = 0;
-    contador.textContent = passos;
+    await fetch(`${BACKEND_URL}/passos`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passos: 0 })
+    });
   } catch (err) {
-    console.log("Erro ao converter passos:", err);
+    console.log("Erro ao salvar conversão:", err);
   }
 });
 
