@@ -175,4 +175,40 @@ withdrawBtn.addEventListener("click", async () => {
     withdrawMessage.textContent = "Erro ao comunicar com o servidor.";
     console.log(err);
   }
+  async function withdrawDoge() {
+  const userId = "demoUser"; // depois ligamos ao login
+  const address = document.getElementById("dogeAddress").value;
+  const amount = parseFloat(document.getElementById("dogeAmount").value);
+
+  if (!address || !amount || amount <= 0) {
+    alert("Preenche endereço e valor corretamente");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost:3000/withdraw", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userId,
+        address,
+        amount
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert("Erro: " + data.error);
+      return;
+    }
+
+    alert("Withdraw enviado!\nTX: " + data.txHash);
+  } catch (err) {
+    alert("Erro ao contactar backend");
+    console.error(err);
+  }
+      }
 });
