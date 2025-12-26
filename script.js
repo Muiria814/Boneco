@@ -54,8 +54,7 @@ let lastConvert = 0;
 
 // Validar senha
 function validarSenha(senha) {
-  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  return regex.test(senha);
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#+\-])[A-Za-z\d@$!%*?&#+\-]{8,}$/;
 }
 
 // Mostrar registro
