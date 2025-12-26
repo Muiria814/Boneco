@@ -4,16 +4,123 @@ const BACKEND_URL = "https://backend-z7zy.onrender.com"; // <-- coloque sua URL 
 const PASSWORD_CORRETA = "Professor2024#";
 
 const loginScreen = document.getElementById("login-screen");
+const registerScreen = document.getElementById("register-screen");
 const app = document.getElementById("app");
 const passwordInput = document.getElementById("passwordInput");
 const loginBtn = document.getElementById("loginBtn");
 const loginMessage = document.getElementById("loginMessage");
+const goToRegister = document.getElementById("goToRegister");
 
-if (localStorage.getItem("logado") === "true") {
-  loginScreen.style.display = "none";
-  app.style.display = "block";
+// ====== REGISTRO ======
+const registerName = document.getElementById("registerName");
+const registerEmail = document.getElementById("registerEmail");
+const registerPassword = document.getElementById("registerPassword");
+const registerPasswordConfirm = document.getElementById("registerPasswordConfirm");
+const registerBtn = document.getElementById("registerBtn");
+const registerMessage = document.getElementById("registerMessage");
+const backToLogin = document.getElementById("backToLogin");
+
+// ====== LOGOUT ======
+const logoutBtn = document.getElementById("logoutBtn");
+
+// ====== APP ======
+const contador = document.getElementById("steps");
+const energiaEl = document.getElementById("energia");
+const dogeEl = document.getElementById("doge");
+const botao = document.getElementById("startBtn");
+const resetBtn = document.getElementById("resetBtn");
+const convertBtn = document.getElementById("convertBtn");
+const boneco = document.getElementById("character");
+
+const withdrawBtn = document.getElementById("withdrawBtn");
+const dogeAddressInput = document.getElementById("dogeAddress");
+const withdrawMessage = document.getElementById("withdraw-message");
+
+// ====== CONFIGURAÇÕES ======
+const DOGE_POR_PASSOS = 1000;
+const MIN_SAQUE = 50;
+const COOLDOWN_CONVERT = 5000; // 5 segundos cooldown para teste
+
+// ====== ESTADO ======
+let passos = 0;
+let energia = 0;
+let doge = 0;
+let intervalo = null;
+let andando = false;
+let posX = 0;
+let lastConvert = 0;
+
+// ====== FUNÇÕES ======
+
+// Validar senha
+function validarSenha(senha) {
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return regex.test(senha);
 }
 
+// Mostrar registro
+goToRegister.addEventListener("click", () => {
+  loginScreen.style.display = "none";
+  registerScreen.style.display = "block";
+});
+
+// Voltar ao login
+backToLogin.addEventListener("click", () => {
+  registerScreen.style.display = "none";
+  loginScreen.style.display = "block";
+});
+
+// ====== REGISTRAR USUÁRIO ======
+registerBtn.addEventListener("click", async () => {
+  const nome = registerName.value.trim();
+  const email = registerEmail.value.trim();
+  const senha = registerPassword.value;
+  const senhaConfirm = registerPasswordConfirm.value;
+
+  if (!nome || !email || !senha || !senhaConfirm) {
+    registerMessage.style.color = "red";
+    registerMessage.textContent = "Preencha todos os campos!";
+    return;
+  }
+
+  if (senha !== senhaConfirm) {
+    registerMessage.style.color = "red";
+    registerMessage.textContent = "As senhas não coincidem!";
+    return;
+  }
+
+  if (!validarSenha(senha)) {
+    registerMessage.style.color = "red";
+    registerMessage.textContent = "Senha fraca! Deve conter letras, números e símbolos (mínimo 8 caracteres).";
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nome, email, senha })
+    });
+    const data = await res.json();
+    if (data.success) {
+      registerMessage.style.color = "green";
+      registerMessage.textContent = "Conta criada com sucesso! Faça login.";
+      setTimeout(() => {
+        registerScreen.style.display = "none";
+        loginScreen.style.display = "block";
+      }, 1500);
+    } else {
+      registerMessage.style.color = "red";
+      registerMessage.textContent = data.message || "Erro ao criar conta.";
+    }
+  } catch (err) {
+    console.error(err);
+    registerMessage.style.color = "red";
+    registerMessage.textContent = "Erro ao comunicar com o servidor.";
+  }
+});
+
+// ====== LOGIN ======
 loginBtn.addEventListener("click", () => {
   if (passwordInput.value === PASSWORD_CORRETA) {
     localStorage.setItem("logado", "true");
@@ -26,94 +133,53 @@ loginBtn.addEventListener("click", () => {
 });
 
 // ====== LOGOUT ======
-const logoutBtn = document.getElementById("logoutBtn");
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("logado");
   location.reload();
-  
 });
-
-// ====== CONFIGURAÇÕES ======
-const DOGE_POR_PASSOS = 1000;
-const MIN_SAQUE = 50;
-
-// ====== ESTADO ======
-let passos = parseInt(localStorage.getItem("passos")) || 0;
-let doge = parseFloat(localStorage.getItem("doge")) || 0;
-let intervalo = null;
-let andando = false;
-let posX = 0;
-
-// ====== ELEMENTOS ======
-const contador = document.getElementById("steps");
-const boneco = document.getElementById("character");
-const botao = document.getElementById("startBtn");
-const resetBtn = document.getElementById("resetBtn");
-const dogeEl = document.getElementById("doge");
-const convertBtn = document.getElementById("convertBtn");
-contador.textContent = passos;
-dogeEl.textContent = doge.toFixed(2);
-
-const withdrawBtn = document.getElementById("withdraw-button");
-const dogeAddressInput = document.getElementById("doge-address");
-const withdrawMessage = document.getElementById("withdraw-message");
 
 // ====== INICIALIZAÇÃO ======
 async function init() {
-  // buscar passos do backend
   try {
     const passosRes = await fetch(`${BACKEND_URL}/passos`);
     const passosData = await passosRes.json();
     passos = passosData.passos || 0;
-  } catch (err) {
-    console.log("Erro ao buscar passos:", err);
-  }
+  } catch (err) { console.log("Erro passos:", err); }
 
-  // buscar saldo DOGE do backend
   try {
     const saldoRes = await fetch(`${BACKEND_URL}/saldo`);
     const saldoData = await saldoRes.json();
     doge = saldoData.saldo || 0;
-  } catch (err) {
-    console.log("Erro ao buscar saldo:", err);
-  }
+  } catch (err) { console.log("Erro saldo:", err); }
 
   contador.textContent = passos;
   dogeEl.textContent = doge.toFixed(2);
+  energiaEl.textContent = energia;
 }
 
 init();
 
-// ====== INICIAR CAMINHADA ======
+// ====== CAMINHADA ======
 botao.addEventListener("click", () => {
   if (andando) return;
   andando = true;
   botao.disabled = true;
 
-  intervalo = setInterval(async () => {
+  intervalo = setInterval(() => {
     passos++;
+    energia++; // energia acompanha passos
     localStorage.setItem("passos", passos);
     contador.textContent = passos;
+    energiaEl.textContent = energia;
 
-    // enviar passos ao backend
-    try {
-      await fetch(`${BACKEND_URL}/passos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ novosPassos: 1 })
-      });
-    } catch (err) {
-      console.log("Erro ao salvar passos:", err);
-    }
-
-    // movimento do boneco
+    // Movimento do boneco
     posX += 5;
     boneco.style.left = posX + "px";
     if (posX > 260) posX = 0;
   }, 500);
 });
 
-// ====== PAUSAR ======
+// ====== PARAR CAMINHADA ======
 resetBtn.addEventListener("click", () => {
   clearInterval(intervalo);
   intervalo = null;
@@ -121,20 +187,51 @@ resetBtn.addEventListener("click", () => {
   botao.disabled = false;
 });
 
-// ====== LEVANTAR DOGE ======
+// ====== CONVERTER PASSOS EM DOGE ======
+convertBtn.addEventListener("click", async () => {
+  const agora = Date.now();
+  if (agora - lastConvert < COOLDOWN_CONVERT) {
+    alert("Cooldown ativo! Aguarde alguns segundos.");
+    return;
+  }
+  if (energia <= 0) {
+    alert("Sem energia para converter!");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/convert`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: "demoUser" })
+    });
+    const data = await res.json();
+    if (data.success) {
+      doge = data.novoSaldo;
+      energia = 0;
+      dogeEl.textContent = doge.toFixed(2);
+      energiaEl.textContent = energia;
+      lastConvert = Date.now();
+    } else {
+      alert(data.message || "Erro na conversão.");
+    }
+  } catch (err) {
+    console.log(err);
+    alert("Erro ao comunicar com o servidor.");
+  }
+});
+
+// ====== WITHDRAW DOGE ======
 withdrawBtn.addEventListener("click", async () => {
   const address = dogeAddressInput.value.trim();
-
   if (!address) {
     withdrawMessage.style.color = "red";
     withdrawMessage.textContent = "Insira um endereço DOGE válido.";
     return;
   }
-
   if (doge < MIN_SAQUE) {
     withdrawMessage.style.color = "red";
-    withdrawMessage.textContent =
-      `Mínimo para levantamento: ${MIN_SAQUE} DOGE.`;
+    withdrawMessage.textContent = `Mínimo para levantamento: ${MIN_SAQUE} DOGE.`;
     return;
   }
 
@@ -142,31 +239,16 @@ withdrawBtn.addEventListener("click", async () => {
     const res = await fetch(`${BACKEND_URL}/withdraw`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        address,
-        amount: doge
-      })
+      body: JSON.stringify({ address, amount: doge })
     });
-
     const data = await res.json();
-
     if (data.success) {
-
-  // buscar saldo real do backend
-  const saldoRes = await fetch(`${BACKEND_URL}/saldo`);
-  const saldoData = await saldoRes.json();
-
-  doge = saldoData.saldo;
-  passos = saldoData.passos;
-
-  dogeEl.textContent = doge.toFixed(2);
-  contador.textContent = passos;
-
-  withdrawMessage.style.color = "green";
-  withdrawMessage.textContent = "Levantamento solicitado com sucesso ✅";
- 
-  dogeAddressInput.value = "";
-   } else {
+      doge = 0;
+      dogeEl.textContent = doge.toFixed(2);
+      withdrawMessage.style.color = "green";
+      withdrawMessage.textContent = "Levantamento solicitado com sucesso ✅";
+      dogeAddressInput.value = "";
+    } else {
       withdrawMessage.style.color = "red";
       withdrawMessage.textContent = data.message || "Erro no levantamento.";
     }
@@ -175,40 +257,10 @@ withdrawBtn.addEventListener("click", async () => {
     withdrawMessage.textContent = "Erro ao comunicar com o servidor.";
     console.log(err);
   }
-  async function withdrawDoge() {
-  const userId = "demoUser"; // depois ligamos ao login
-  const address = document.getElementById("dogeAddress").value;
-  const amount = parseFloat(document.getElementById("dogeAmount").value);
-
-  if (!address || !amount || amount <= 0) {
-    alert("Preenche endereço e valor corretamente");
-    return;
-  }
-
-  try {
-    const res = await fetch("http://localhost:3000/withdraw", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userId,
-        address,
-        amount
-      })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert("Erro: " + data.error);
-      return;
-    }
-
-    alert("Withdraw enviado!\nTX: " + data.txHash);
-  } catch (err) {
-    alert("Erro ao contactar backend");
-    console.error(err);
-  }
-      }
 });
+
+// ====== AUTO LOGIN ======
+if (localStorage.getItem("logado") === "true") {
+  loginScreen.style.display = "none";
+  app.style.display = "block";
+}
