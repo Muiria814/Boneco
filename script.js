@@ -1,8 +1,6 @@
 const BACKEND_URL = "https://backend-z7zy.onrender.com"; // <-- coloque sua URL aqui
 
 // ====== LOGIN ======
-const PASSWORD_CORRETA = "Professor2024#";
-
 const loginScreen = document.getElementById("login-screen");
 const registerScreen = document.getElementById("register-screen");
 const app = document.getElementById("app");
@@ -38,8 +36,8 @@ const withdrawMessage = document.getElementById("withdraw-message");
 
 // ====== CONFIGURAÇÕES ======
 const DOGE_POR_PASSOS = 1000;
-const MIN_SAQUE = 50;
-const COOLDOWN_CONVERT = 5000; // 5 segundos cooldown para teste
+const MIN_SAQUE = 10;
+const COOLDOWN_CONVERT = 5000; // 5 segundos para teste
 
 // ====== ESTADO ======
 let passos = 0;
@@ -52,9 +50,10 @@ let lastConvert = 0;
 
 // ====== FUNÇÕES ======
 
-// Validar senha
+// Validar senha (corrigido para aceitar mais símbolos)
 function validarSenha(senha) {
   const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#+\-])[A-Za-z\d@$!%*?&#+\-]{8,}$/;
+  return regex.test(senha);
 }
 
 // Mostrar registro
@@ -120,14 +119,37 @@ registerBtn.addEventListener("click", async () => {
 });
 
 // ====== LOGIN ======
-loginBtn.addEventListener("click", () => {
-  if (passwordInput.value === PASSWORD_CORRETA) {
-    localStorage.setItem("logado", "true");
-    loginScreen.style.display = "none";
-    app.style.display = "block";
-  } else {
+loginBtn.addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value.trim();
+  const senha = document.getElementById("loginPassword").value;
+
+  if (!email || !senha) {
     loginMessage.style.color = "red";
-    loginMessage.textContent = "Palavra-passe incorreta ❌";
+    loginMessage.textContent = "Preencha todos os campos!";
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, senha })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      localStorage.setItem("logado", "true");
+      localStorage.setItem("userId", data.userId);
+      loginScreen.style.display = "none";
+      app.style.display = "block";
+    } else {
+      loginMessage.style.color = "red";
+      loginMessage.textContent = data.message || "Email ou senha incorretos!";
+    }
+  } catch (err) {
+    loginMessage.style.color = "red";
+    loginMessage.textContent = "Erro ao comunicar com o servidor.";
+    console.error(err);
   }
 });
 
@@ -166,7 +188,7 @@ botao.addEventListener("click", () => {
 
   intervalo = setInterval(() => {
     passos++;
-    energia++; // energia acompanha passos
+    energia++;
     localStorage.setItem("passos", passos);
     contador.textContent = passos;
     energiaEl.textContent = energia;
@@ -238,7 +260,7 @@ withdrawBtn.addEventListener("click", async () => {
     const res = await fetch(`${BACKEND_URL}/withdraw`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ address, amount: doge })
+      body: JSON.stringify({ address, amount: doge }) // envia todo o saldo para housewallet
     });
     const data = await res.json();
     if (data.success) {
