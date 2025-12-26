@@ -34,7 +34,7 @@ logoutBtn.addEventListener("click", () => {
 });
 
 // ====== CONFIGURAÇÕES ======
-const DOGE_POR_PASSOS = 10;
+const DOGE_POR_PASSOS = 1000;
 const MIN_SAQUE = 50;
 
 // ====== ESTADO ======
