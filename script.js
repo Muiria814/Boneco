@@ -225,11 +225,13 @@ convertBtn.addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch(`${BACKEND_URL}/convert`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: "demoUser" })
-    });
+    const userId = localStorage.getItem("userId");
+
+const res = await fetch(`${BACKEND_URL}/convert`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ userId })
+});
     const data = await res.json();
     if (data.success) {
       doge = data.novoSaldo;
@@ -261,11 +263,13 @@ withdrawBtn.addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch(`${BACKEND_URL}/withdraw`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ address, amount: doge }) // envia todo o saldo para housewallet
-    });
+    const userId = localStorage.getItem("userId");
+
+const res = await fetch(`${BACKEND_URL}/withdraw`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ userId, address, amount: doge })
+});
     const data = await res.json();
     if (data.success) {
       doge = 0;
