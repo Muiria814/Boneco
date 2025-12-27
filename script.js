@@ -45,9 +45,14 @@ const MIN_SAQUE = 10;
 const COOLDOWN_CONVERT = 5000; // 5 segundos para teste
 
 // ====== ESTADO ======
-let passos = 0;
-let energia = 0;
-let doge = 0;
+let passos = parseInt(localStorage.getItem("passos")) || 0;
+let energia = parseInt(localStorage.getItem("energia")) || 0;
+let doge = parseFloat(localStorage.getItem("doge")) || 0;
+
+// atualizar ecrã com valores guardados
+contador.textContent = passos;
+energiaEl.textContent = energia;
+dogeEl.textContent = doge.toFixed(2);
 let intervalo = null;
 let andando = false;
 let posX = 0;
@@ -208,9 +213,10 @@ botao.addEventListener("click", () => {
   intervalo = setInterval(() => {
     passos++;
     energia++;
+   contador.textContent = passos;
+   energiaEl.textContent = energia;
     localStorage.setItem("passos", passos);
-    contador.textContent = passos;
-    energiaEl.textContent = energia;
+    localStorage.setItem("energia", energia);
 
     // Movimento do boneco
     posX += 5;
