@@ -135,11 +135,15 @@ loginBtn.addEventListener("click", async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, senha })
     });
+
     const data = await res.json();
 
     if (data.success) {
+      // guardar sessão
       localStorage.setItem("logado", "true");
       localStorage.setItem("userId", data.userId);
+
+      // mostrar app
       loginScreen.style.display = "none";
       app.style.display = "block";
     } else {
