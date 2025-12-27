@@ -33,6 +33,7 @@ const dogeEl = document.getElementById("doge");
 const botao = document.getElementById("startBtn");
 const resetBtn = document.getElementById("resetBtn");
 const convertBtn = document.getElementById("convertBtn");
+const convertMessage = document.getElementById("convertMessage");
 const boneco = document.getElementById("character");
 
 const withdrawBtn = document.getElementById("withdrawBtn");
@@ -235,37 +236,55 @@ resetBtn.addEventListener("click", () => {
 
 // ====== CONVERTER PASSOS EM DOGE ======
 convertBtn.addEventListener("click", async () => {
+  convertMessage.textContent = "";
+  convertMessage.style.color = "white";
+
   const agora = Date.now();
+
   if (agora - lastConvert < COOLDOWN_CONVERT) {
-    alert("Cooldown ativo! Aguarde alguns segundos.");
+    convertMessage.style.color = "orange";
+    convertMessage.textContent = "⏳ Aguarde alguns segundos antes de converter novamente.";
     return;
   }
+
   if (energia <= 0) {
-    alert("Sem energia para converter!");
+    convertMessage.style.color = "red";
+    convertMessage.textContent = "❌ Sem energia suficiente para converter.";
     return;
   }
 
   try {
     const userId = localStorage.getItem("userId");
 
-const res = await fetch(`${BACKEND_URL}/convert`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ userId })
-});
+    const res = await fetch(`${BACKEND_URL}/convert`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId })
+    });
+
     const data = await res.json();
+
     if (data.success) {
       doge = data.novoSaldo;
       energia = 0;
+
       dogeEl.textContent = doge.toFixed(2);
       energiaEl.textContent = energia;
+
       lastConvert = Date.now();
-    } else {
-      alert(data.message || "Erro na conversão.");
+
+      convertMessage.style.color = "lightgreen";
+      convertMessage.textContent = "✔ Conversão realizada com sucesso!";
+    } 
+    else {
+      convertMessage.style.color = "red";
+      convertMessage.textContent = data.message || "❌ Erro na conversão.";
     }
+
   } catch (err) {
     console.log(err);
-    alert("Erro ao comunicar com o servidor.");
+    convertMessage.style.color = "red";
+    convertMessage.textContent = "❌ Erro ao comunicar com o servidor.";
   }
 });
 
