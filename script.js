@@ -1,14 +1,19 @@
 const BACKEND_URL = "https://backend-z7zy.onrender.com"; // <-- coloque sua URL aqui
 
-// ====== LOGIN ======
+// ====== TELAS ======
+const welcomeScreen = document.getElementById("welcome-screen");
 const loginScreen = document.getElementById("login-screen");
 const registerScreen = document.getElementById("register-screen");
 const app = document.getElementById("app");
-const passwordInput = document.getElementById("passwordInput");
+
+// ====== LOGIN ======
 const loginBtn = document.getElementById("loginBtn");
 const loginMessage = document.getElementById("loginMessage");
-const goToRegister = document.getElementById("goToRegister");
 
+// ====== NAVEGAÇÃO ======
+const goToRegister = document.getElementById("goToRegister");
+const goToLogin = document.getElementById("goToLogin");
+const backToWelcome = document.getElementById("backToWelcome");
 // ====== REGISTRO ======
 const registerName = document.getElementById("registerName");
 const registerEmail = document.getElementById("registerEmail");
@@ -56,16 +61,23 @@ function validarSenha(senha) {
   return regex.test(senha);
 }
 
-// Mostrar registro
+// Abrir registro
 goToRegister.addEventListener("click", () => {
-  loginScreen.style.display = "none";
+  welcomeScreen.style.display = "none";
   registerScreen.style.display = "block";
 });
 
-// Voltar ao login
-backToLogin.addEventListener("click", () => {
-  registerScreen.style.display = "none";
+// Abrir login
+goToLogin.addEventListener("click", () => {
+  welcomeScreen.style.display = "none";
   loginScreen.style.display = "block";
+});
+
+// Voltar
+backToWelcome.addEventListener("click", () => {
+  loginScreen.style.display = "none";
+  registerScreen.style.display = "none";
+  welcomeScreen.style.display = "block";
 });
 
 // ====== REGISTRAR USUÁRIO ======
