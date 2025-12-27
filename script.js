@@ -172,7 +172,10 @@ loginBtn.addEventListener("click", async () => {
 // ====== LOGOUT ======
 logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("logado");
-  location.reload();
+  localStorage.removeItem("userId");
+
+  app.style.display = "none";
+  welcomeScreen.style.display = "block";
 });
 
 // ====== INICIALIZAÇÃO ======
