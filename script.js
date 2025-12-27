@@ -187,31 +187,33 @@ logoutBtn.addEventListener("click", () => {
 // ====== INICIALIZAÇÃO ======
 async function init() {
   try {
+    const userId = localStorage.getItem("userId");   // 👈 buscar o ID
 
-    const userId = localStorage.getItem("userId");   // 👈 BUSCAR O ID
-
+    // 👉 BUSCAR PASSOS NO BACKEND
     const passosRes = await fetch(`${BACKEND_URL}/passos/${userId}`);
     const passosData = await passosRes.json();
-
     passos = passosData.passos || 0;
 
-  } catch (err) { 
-    console.log("Erro passos:", err); 
+  } catch (err) {
+    console.log("Erro passos:", err);
   }
 
   try {
-    const saldoRes = await fetch(`${BACKEND_URL}/saldo`);
+    const userId = localStorage.getItem("userId");   // 👈 usa o mesmo ID
+
+    // 👉 BUSCAR SALDO DOGE NO BACKEND
+    const saldoRes = await fetch(`${BACKEND_URL}/saldo/${userId}`);
     const saldoData = await saldoRes.json();
+
     doge = saldoData.saldo || 0;
-  } catch (err) { 
-    console.log("Erro saldo:", err); 
+  } catch (err) {
+    console.log("Erro saldo:", err);
   }
 
   contador.textContent = passos;
   dogeEl.textContent = doge.toFixed(2);
   energiaEl.textContent = energia;
 }
-
 init();
 
 // ====== CAMINHADA ======
