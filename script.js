@@ -302,6 +302,10 @@ const res = await fetch(`${BACKEND_URL}/withdraw`, {
 
 // ====== AUTO LOGIN ======
 if (localStorage.getItem("logado") === "true") {
-  loginScreen.style.display = "none";
+
+  if (welcomeScreen) welcomeScreen.style.display = "none";
+  if (loginScreen) loginScreen.style.display = "none";
+  if (registerScreen) registerScreen.style.display = "none";
+
   app.style.display = "block";
 }
