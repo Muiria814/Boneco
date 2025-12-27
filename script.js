@@ -187,16 +187,25 @@ logoutBtn.addEventListener("click", () => {
 // ====== INICIALIZAÇÃO ======
 async function init() {
   try {
-    const passosRes = await fetch(`${BACKEND_URL}/passos`);
+
+    const userId = localStorage.getItem("userId");   // 👈 BUSCAR O ID
+
+    const passosRes = await fetch(`${BACKEND_URL}/passos/${userId}`);
     const passosData = await passosRes.json();
+
     passos = passosData.passos || 0;
-  } catch (err) { console.log("Erro passos:", err); }
+
+  } catch (err) { 
+    console.log("Erro passos:", err); 
+  }
 
   try {
     const saldoRes = await fetch(`${BACKEND_URL}/saldo`);
     const saldoData = await saldoRes.json();
     doge = saldoData.saldo || 0;
-  } catch (err) { console.log("Erro saldo:", err); }
+  } catch (err) { 
+    console.log("Erro saldo:", err); 
+  }
 
   contador.textContent = passos;
   dogeEl.textContent = doge.toFixed(2);
@@ -211,19 +220,32 @@ botao.addEventListener("click", () => {
   andando = true;
   botao.disabled = true;
 
-  intervalo = setInterval(() => {
-    passos++;
-    energia++;
-   contador.textContent = passos;
-   energiaEl.textContent = energia;
-    localStorage.setItem("passos", passos);
-    localStorage.setItem("energia", energia);
+  intervalo = setInterval(async () => {
 
-    // Movimento do boneco
-    posX += 5;
-    boneco.style.left = posX + "px";
-    if (posX > 260) posX = 0;
-  }, 500);
+  passos++;
+  energia++;
+
+  contador.textContent = passos;
+  energiaEl.textContent = energia;
+
+  localStorage.setItem("passos", passos);
+  localStorage.setItem("energia", energia);
+
+  // 👇 ATUALIZA OS PASSOS NO BACKEND
+  const userId = localStorage.getItem("userId");
+
+  await fetch(`${BACKEND_URL}/passos/${userId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ novosPassos: 1 })
+  });
+
+  // Movimento do boneco
+  posX += 5;
+  boneco.style.left = posX + "px";
+  if (posX > 260) posX = 0;
+
+}, 500);
 });
 
 // ====== PARAR CAMINHADA ======
