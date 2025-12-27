@@ -8,19 +8,34 @@
 <body>
 
   <!-- ====== LOGIN ====== -->
-  <div id="login-screen" style="text-align:center; margin-top:100px;">
-    <h2>Login</h2>
-    <input type="password" id="passwordInput" placeholder="Palavra-passe" style="padding:35px; font-size:35px;">
-    <br><br>
-    <button id="loginBtn" style="padding:30px 50px; font-size:40px;">Iniciar Sessão</button>
-    <p id="loginMessage"></p>
-    <br>
-    <button id="goToRegister" style="padding:20px 40px; font-size:25px;">Criar Conta</button>
-    <input type="email" id="loginEmail" placeholder="Email" style="padding:35px; font-size:35px;">
-<br><br>
-<input type="password" id="loginPassword" placeholder="Palavra-passe" style="padding:35px; font-size:35px;">
-  </div>
+<div id="login-screen" style="text-align:center; margin-top:100px;">
 
+  <button id="goToRegister" 
+          style="padding:30px 60px; font-size:35px; margin-bottom:25px;">
+    Criar Conta
+  </button>
+
+  <h3 style="margin-top:10px;">Já tem conta?</h3>
+
+  <input type="email" 
+         id="loginEmail" 
+         placeholder="Email" 
+         style="padding:25px; font-size:28px; width:80%; max-width:400px;">
+  <br><br>
+
+  <input type="password" 
+         id="loginPassword" 
+         placeholder="Palavra-passe" 
+         style="padding:25px; font-size:28px; width:80%; max-width:400px;">
+  <br><br>
+
+  <button id="loginBtn" 
+          style="padding:20px 40px; font-size:28px;">
+    Iniciar Sessão
+  </button>
+
+  <p id="loginMessage"></p>
+</div>
   <!-- ====== REGISTRO ====== -->
   <div id="register-screen" style="display:none; text-align:center; margin-top:50px;">
     <h2>Criar Conta</h2>
