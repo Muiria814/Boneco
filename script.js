@@ -189,36 +189,43 @@ logoutBtn.addEventListener("click", () => {
 
 // ====== INICIALIZAÇÃO ======
 async function init() {
-  try {
-    const userId = localStorage.getItem("userId");   // 👈 buscar o ID
+  const userId = localStorage.getItem("userId");
 
-    // 👉 BUSCAR PASSOS NO BACKEND
+  // 👉 BUSCAR PASSOS
+  try {
     const passosRes = await fetch(`${BACKEND_URL}/passos/${userId}`);
     const passosData = await passosRes.json();
     passos = passosData.passos || 0;
-
   } catch (err) {
     console.log("Erro passos:", err);
   }
 
+  // 👉 BUSCAR SALDO DOGE
   try {
-    const userId = localStorage.getItem("userId");   // 👈 usa o mesmo ID
-
-    // 👉 BUSCAR SALDO DOGE NO BACKEND
     const saldoRes = await fetch(`${BACKEND_URL}/saldo/${userId}`);
     const saldoData = await saldoRes.json();
-
     doge = saldoData.saldo || 0;
   } catch (err) {
     console.log("Erro saldo:", err);
   }
 
+  // 👉 BUSCAR ENERGIA
+  try {
+    const energiaRes = await fetch(`${BACKEND_URL}/energia/${userId}`);
+    const energiaData = await energiaRes.json();
+    energia = energiaData.energia ?? 100;
+  } catch (err) {
+    console.log("Erro energia:", err);
+  }
+
+  // 👉 ATUALIZAR O ECRÃ
   contador.textContent = passos;
   dogeEl.textContent = doge.toFixed(2);
   energiaEl.textContent = energia;
 }
-init();
 
+// CHAMAR A FUNÇÃO
+init();
 // ====== CAMINHADA ======
 botao.addEventListener("click", () => {
   if (andando) return;
