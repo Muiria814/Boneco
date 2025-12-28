@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif, italic;
+  text-align: center;
+  background-color: #1e1e1e; /* fundo escuro suave */
+  color: #f0f0f0;            /* texto claro */
+}
+
+/* Título */
+h1 {
+  font-size: 50px;
+  margin: 24px 0;
+}
+
+/* Área do jogo ocupa quase todo o ecrã */
+#game {
+  width: 95vw;
+  max-width: 600px;
+  height: 60vh;
+  max-height: 420px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  background-color: transparent; /* remove fundo */
+  border: none;                  /* remove retângulo */
+}
+/* Boneco */
+#character {
+  position: absolute;
+  left: 0;
+  bottom: 12px;
+  font-size: 56px;
+}
+
+/* Texto de passos */
+p {
+  font-size: 50px;
+  font-weight: 700;
+  color: #eaeaea;
+}
+
+/* Botões grandes (mobile friendly) */
+button {
+  font-size: 56px;
+  padding: 28px 44px;
+  margin: 20px;
+  border-radius: 20px;
+  border: none;
+  background-color: #3a6ea5; /* azul escuro */
+  color: #ffffff;
+}
+
+button:disabled {
+  background-color: #555;
+  color: #ccc;
+}
+
+#doge {
+  font-size: 50px;
+  font-weight: bold;
+  color: #f5c518; /* dourado tipo DOGE */
+}
+
+/* ===== TÍTULO LOGIN ===== */
+.login-container p {
+  font-size: 34px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
