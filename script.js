@@ -46,10 +46,9 @@ const MIN_SAQUE = 10;
 const COOLDOWN_CONVERT = 5000; // 5 segundos para teste
 
 // ====== ESTADO ======
-let passos = parseInt(localStorage.getItem("passos")) || 0;
-let energia = parseInt(localStorage.getItem("energia")) || 0;
-let doge = parseFloat(localStorage.getItem("doge")) || 0;
-
+let passos = 0;
+let energia = 0;
+let doge = 0;
 // atualizar ecrã com valores guardados
 contador.textContent = passos;
 energiaEl.textContent = energia;
@@ -266,6 +265,7 @@ if (passos % 50 === 0 && energia > 0) {
   energiaEl.textContent = energia;
 
 }, 500);
+  
 // ====== PARAR CAMINHADA ======
 resetBtn.addEventListener("click", () => {
   clearInterval(intervalo);
