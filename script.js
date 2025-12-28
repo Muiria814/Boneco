@@ -235,31 +235,32 @@ botao.addEventListener("click", () => {
   intervalo = setInterval(async () => {
 
   passos++;
-  energia++;
 
-  contador.textContent = passos;
-  energiaEl.textContent = energia;
+  // gastar energia a cada 50 passos
+  if (passos % 50 === 0 && energia > 0) {
+    energia--;
+  }
 
-  localStorage.setItem("passos", passos);
-  localStorage.setItem("energia", energia);
-
-  // 👇 ATUALIZA OS PASSOS NO BACKEND
   const userId = localStorage.getItem("userId");
 
+  // atualizar ENERGIA no backend
+  fetch(`${BACKEND_URL}/energia`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, energia })
+  });
+
+  // atualizar PASSOS no backend
   await fetch(`${BACKEND_URL}/passos/${userId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ novosPassos: 1 })
   });
 
-  // Movimento do boneco
-  posX += 5;
-  boneco.style.left = posX + "px";
-  if (posX > 260) posX = 0;
+  contador.textContent = passos;
+  energiaEl.textContent = energia;
 
 }, 500);
-});
-
 // ====== PARAR CAMINHADA ======
 resetBtn.addEventListener("click", () => {
   clearInterval(intervalo);
