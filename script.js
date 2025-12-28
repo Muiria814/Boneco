@@ -230,7 +230,6 @@ async function init() {
   energiaEl.textContent = energia;
 }
 
-// CHAMAR A FUNÇÃO
 init();
 // ====== CAMINHADA ======
 botao.addEventListener("click", () => {
