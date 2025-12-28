@@ -162,7 +162,13 @@ loginBtn.addEventListener("click", async () => {
       localStorage.setItem("userId", data.userId);
       passos = data.passos || 0;
 energia = data.energia || 100;
-saldo = data.doge || 0;
+doge = data.doge || 0;
+
+      // 🔹 ATUALIZA A TELA AQUI
+  contador.textContent = passos;
+  energiaEl.textContent = energia;
+  dogeEl.textContent = doge.toFixed(2);
+      
 
       // mostrar app
       loginScreen.style.display = "none";
