@@ -158,10 +158,11 @@ loginBtn.addEventListener("click", async () => {
     if (data.success) {
       // guardar sessão
       localStorage.setItem("logado", "true");
-      localStorage.setItem("userId", data.userId);
-      passos = data.passos || 0;
-energia = data.energia || 100;
-doge = data.doge || 0;
+      localStorage.setItem("userId", data.user.id);
+
+passos = data.user.passos || 0;
+energia = data.user.energia ?? 100;
+doge = data.user.doge || 0;
 
       // 🔹 ATUALIZA A TELA AQUI
   contador.textContent = passos;
