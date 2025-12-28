@@ -220,6 +220,7 @@ async function init() {
     const energiaRes = await fetch(`${BACKEND_URL}/energia/${userId}`);
     const energiaData = await energiaRes.json();
     energia = energiaData.energia ?? 100;
+    energiaEl.textContent = energia;
   } catch (err) {
     console.log("Erro energia:", err);
   }
