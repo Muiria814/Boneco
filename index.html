@@ -49,16 +49,21 @@
   <!-- ====== REGISTRO ====== -->
   <div id="register-screen" style="display:none; text-align:center; margin-top:50px;">
     <h2>Criar Conta</h2>
-    <input type="text" id="registerName" placeholder="Nome" style="padding:20px; font-size:25px;">
-    <input type="email" id="registerEmail" placeholder="Email" style="padding:20px; font-size:25px;">
-    <input type="password" id="registerPassword" placeholder="Palavra-passe" style="padding:20px; font-size:25px;">
-    <input type="password" id="registerPasswordConfirm" placeholder="Confirmar palavra-passe" style="padding:20px; font-size:25px;">
-    <br>
-    <button id="registerBtn" style="padding:30px 50px; font-size:35px;">Registrar</button>
-    <p id="registerMessage"></p>
-    <br>
-    <button id="backToLogin" style="padding:20px 40px; font-size:25px;">Voltar ao Login</button>
-  </div>
+   <div style="display:flex; flex-direction:column; gap:15px; align-items:center;">
+
+  <input type="text" id="registerName" placeholder="Nome"
+         style="padding:20px; font-size:25px; width:80%; max-width:400px;">
+
+  <input type="email" id="registerEmail" placeholder="Email"
+         style="padding:20px; font-size:25px; width:80%; max-width:400px;">
+
+  <input type="password" id="registerPassword" placeholder="Palavra-passe"
+         style="padding:20px; font-size:25px; width:80%; max-width:400px;">
+
+  <input type="password" id="registerPasswordConfirm" placeholder="Confirmar palavra-passe"
+         style="padding:20px; font-size:25px; width:80%; max-width:400px;">
+
+   </div>
 
   <!-- ====== APP ====== -->
   <div id="app" style="display:none; text-align:center;">
