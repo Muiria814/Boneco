@@ -160,6 +160,9 @@ loginBtn.addEventListener("click", async () => {
       // guardar sessão
       localStorage.setItem("logado", "true");
       localStorage.setItem("userId", data.userId);
+      passos = data.passos || 0;
+energia = data.energia || 100;
+saldo = data.doge || 0;
 
       // mostrar app
       loginScreen.style.display = "none";
