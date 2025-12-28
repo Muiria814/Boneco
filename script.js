@@ -1,4 +1,4 @@
-const BACKEND_URL = "https://backend-z7zy.onrender.com"; // <-- coloque sua URL aqui
+const BACKEND_URL = "https://backend-e58o.onrender.com"; // <-- coloque sua URL aqui
 
 // ====== TELAS ======
 const welcomeScreen = document.getElementById("welcome-screen");
