@@ -241,19 +241,19 @@ botao.addEventListener("click", () => {
 
   passos++;
 
-  // gastar energia a cada 50 passos
-  if (passos % 50 === 0 && energia > 0) {
-    energia--;
-  }
-
   const userId = localStorage.getItem("userId");
 
-  // atualizar ENERGIA no backend
+// gastar energia a cada 50 passos
+if (passos % 50 === 0 && energia > 0) {
+  energia--;
+
+  // ATUALIZAR energia só quando mudar
   fetch(`${BACKEND_URL}/energia`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ userId, energia })
   });
+}
 
   // atualizar PASSOS no backend
   await fetch(`${BACKEND_URL}/passos/${userId}`, {
