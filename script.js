@@ -265,7 +265,8 @@ botao.addEventListener("click", () => {
   contador.textContent = passos;
   energiaEl.textContent = energia;
 
-}, 500);
+  }, 500);
+});
   
 // ====== PARAR CAMINHADA ======
 resetBtn.addEventListener("click", () => {
