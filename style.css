@@ -70,3 +70,30 @@ button:disabled {
   font-weight: bold;
   margin-bottom: 25px;
 }
+.form-box{
+  width: 90%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-box input{
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+.form-box button{
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button.secondary{
+  background: #777;
+  color: white;
+}
