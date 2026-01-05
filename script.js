@@ -42,7 +42,7 @@ const withdrawMessage = document.getElementById("withdraw-message");
 
 // ====== CONFIGURAÇÕES ======
 const DOGE_POR_PASSOS = 1000;
-const MIN_SAQUE = 10;
+const MIN_SAQUE = 1;
 const COOLDOWN_CONVERT = 5000; // 5 segundos para teste
 
 // ====== ESTADO ======
