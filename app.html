@@ -6,30 +6,39 @@
   <title>Minerador de Passos Doge</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+
+/* Base de tipografia global */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 18px;
+  }
+}
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      
     }
 
-    body {
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+   body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* bloqueia scroll */
 }
-
 .container {
   width: 100%;
-  min-height: 100vh;
+  height: 100dvh;        /* altura real do ecrã (mobile safe) */
   background: rgba(22, 33, 62, 0.95);
-  border-radius: 0;
   padding: 20px;
-  box-shadow: none;
-  border: none;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
     .header {
       text-align: center;
@@ -38,7 +47,7 @@
 
     .title {
       color: #f1c40f;
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       margin-bottom: 25px;
       display: flex;
       align-items: center;
@@ -62,7 +71,7 @@
 
     .balance-label {
       color: #b8b8b8;
-      font-size: 1rem;
+      font-size: 1.1rem;
       margin-bottom: 8px;
     }
 
@@ -102,7 +111,7 @@
       border: none;
       padding: 25px;
       border-radius: 20px;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -125,7 +134,7 @@
       border: none;
       padding: 20px;
       border-radius: 15px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -157,14 +166,9 @@
     }
 
     .modal-content {
-      background: rgba(22, 33, 62, 0.98);
-      border-radius: 25px;
-      padding: 30px;
-      width: 90%;
-      max-width: 500px;
-      border: 2px solid rgba(241, 196, 15, 0.4);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    }
+  max-height: 90dvh;
+  overflow-y: auto;
+}
 
     .modal-header {
       display: flex;
