@@ -1,6 +1,607 @@
-<link rel="stylesheet" href="style.css">
 
- <!-- Container Principal QUE OCUPA TELA INTEIRA 
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Minerador de Passos Doge</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* RESET COMPLETO */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* CORPO DA PÁGINA QUE OCUPA 100% */
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* CONTAINER PRINCIPAL QUE OCUPA TELA INTEIRA */
+    .container {
+      flex: 1;
+      width: 100%;
+      min-height: 100vh;
+      background: rgba(22, 33, 62, 0.95);
+      padding: 5vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* CABEÇALHO GRANDE */
+    .header {
+      text-align: center;
+      margin-bottom: 8vw;
+      width: 100%;
+    }
+
+    .title {
+      color: #f1c40f;
+      font-size: 2.5rem;
+      margin-bottom: 6vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4vw;
+      flex-wrap: wrap;
+      padding: 0 5vw;
+      text-align: center;
+    }
+
+    .title i {
+      font-size: 3rem;
+    }
+
+    /* SEÇÃO DE SALDO - MUITO MAIOR */
+    .balance-section {
+      display: flex;
+      justify-content: space-around;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      padding: 6vw;
+      margin-bottom: 8vw;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      width: 100%;
+      gap: 4vw;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .balance-item {
+      text-align: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .balance-label {
+      color: #b8b8b8;
+      font-size: 1.4rem;
+      margin-bottom: 2vw;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .balance-value {
+      color: #f1c40f;
+      font-size: 2.2rem;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* BOTÕES GRANDES E VISÍVEIS */
+    .btn-small {
+      background: linear-gradient(135deg, #f1c40f, #e67e22);
+      color: #1a1a2e;
+      border: none;
+      padding: 4vw 8vw;
+      border-radius: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.3rem;
+      width: 100%;
+      min-height: 60px;
+      box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-small i {
+      font-size: 1.8rem;
+    }
+
+    /* BOTÕES PRINCIPAIS GIGANTES */
+    .main-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 6vw;
+      margin-bottom: 8vw;
+      width: 100%;
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, #1a2a6c, #2a3a7c);
+      color: white;
+      border: none;
+      padding: 7vw 5vw;
+      border-radius: 25px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5vw;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      min-height: 90px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(26, 42, 108, 0.4);
+    }
+
+    .btn-main i {
+      font-size: 2.5rem;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(26, 42, 108, 0.6);
+    }
+
+    /* BOTÃO LOGOUT GRANDE */
+    .logout-btn {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+      border: none;
+      padding: 6vw 5vw;
+      border-radius: 20px;
+      font-size: 1.6rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4vw;
+      width: 100%;
+      margin-top: 5vw;
+      min-height: 80px;
+      box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .logout-btn i {
+      font-size: 2rem;
+    }
+
+    /* MODAIS QUE OCUPAM TELA INTEIRA */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.95);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background: rgba(22, 33, 62, 1);
+      border-radius: 30px;
+      padding: 8vw;
+      width: 95vw;
+      max-width: 95vw;
+      max-height: 95vh;
+      overflow-y: auto;
+      border: 3px solid rgba(241, 196, 15, 0.5);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    /* CABEÇALHO MODAL GRANDE */
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8vw;
+      position: relative;
+    }
+
+    .modal-title {
+      color: #f1c40f;
+      font-size: 2.2rem;
+      display: flex;
+      align-items: center;
+      gap: 4vw;
+    }
+
+    .modal-title i {
+      font-size: 2.5rem;
+    }
+
+    /* BOTÃO FECHAR GRANDE */
+    .close-btn {
+      background: none;
+      border: none;
+      color: #f1c40f;
+      font-size: 3rem;
+      cursor: pointer;
+      padding: 2vw;
+      position: absolute;
+      top: -5vw;
+      right: -5vw;
+      z-index: 10;
+      min-width: 60px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* INFO BOX GRANDE */
+    .info-box {
+      background: rgba(241, 196, 15, 0.15);
+      border: 2px solid rgba(241, 196, 15, 0.4);
+      border-radius: 15px;
+      padding: 5vw;
+      margin: 5vw 0;
+      text-align: center;
+      color: #f1c40f;
+      font-size: 1.3rem;
+      line-height: 1.5;
+    }
+
+    .info-box i {
+      font-size: 1.8rem;
+      margin-bottom: 2vw;
+      display: block;
+    }
+
+    /* ENDEREÇO GRANDE */
+    .deposit-address {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 15px;
+      padding: 5vw;
+      margin: 5vw 0;
+      text-align: center;
+      word-break: break-all;
+      color: #2ecc71;
+      font-family: monospace;
+      font-size: 1.2rem;
+      border: 2px solid rgba(46, 204, 113, 0.4);
+      line-height: 1.4;
+    }
+
+    /* MINERAÇÃO - ESTATÍSTICAS GRANDES */
+    .mining-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw;
+      margin: 6vw 0;
+    }
+
+    .stat-card {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      padding: 6vw;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .stat-label {
+      color: #b8b8b8;
+      font-size: 1.2rem;
+      margin-bottom: 2vw;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      color: #f1c40f;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* STATUS MINERAÇÃO */
+    .mining-status {
+      text-align: center;
+      color: #2ecc71;
+      margin: 5vw 0;
+      font-weight: 700;
+      font-size: 1.5rem;
+      padding: 4vw;
+      background: rgba(46, 204, 113, 0.1);
+      border-radius: 15px;
+      border: 2px solid rgba(46, 204, 113, 0.3);
+    }
+
+    /* BOTÃO ASSISTIR ANÚNCIO GRANDE */
+    .watch-ad-btn, .spin-btn, .withdraw-btn {
+      background: linear-gradient(135deg, #f1c40f, #e67e22);
+      color: #1a1a2e;
+      border: none;
+      padding: 6vw;
+      border-radius: 20px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 5vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4vw;
+      min-height: 80px;
+      box-shadow: 0 10px 25px rgba(241, 196, 15, 0.4);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .watch-ad-btn i, .spin-btn i, .withdraw-btn i {
+      font-size: 2rem;
+    }
+
+    .spin-btn {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      color: white;
+    }
+
+    .withdraw-btn {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      color: white;
+    }
+
+    /* ROLETA GIGANTE */
+    .roulette-container {
+      position: relative;
+      width: min(80vw, 400px);
+      height: min(80vw, 400px);
+      margin: 5vw auto;
+    }
+
+    .roulette-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 10px solid #f1c40f;
+      background: #1a1a2e;
+      overflow: hidden;
+      position: relative;
+      transition: transform 4s cubic-bezier(0.2,0.8,0.3,1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .roulette-slice {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      left: 50%;
+      top: 0;
+      transform-origin: 0% 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      clip-path: polygon(100% 100%, 0% 100%, 100% 0%);
+    }
+
+    .slice-0 { transform: rotate(0deg); background: #e74c3c; }
+    .slice-1 { transform: rotate(45deg); background: #e67e22; }
+    .slice-2 { transform: rotate(90deg); background: #f1c40f; }
+    .slice-3 { transform: rotate(135deg); background: #2ecc71; }
+    .slice-4 { transform: rotate(180deg); background: #3498db; }
+    .slice-5 { transform: rotate(225deg); background: #9b59b6; }
+    .slice-6 { transform: rotate(270deg); background: #1abc9c; }
+    .slice-7 { transform: rotate(315deg); background: #d35400; }
+
+    .slice-content {
+      position: absolute;
+      top: 70%;
+      left: 70%;
+      transform: translate(-50%, -50%);
+      font-size: 1.8rem;
+      font-weight: 900;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      pointer-events: none;
+    }
+
+    .slice-0 .slice-content { transform: translate(-50%, -50%) rotate(0deg); }
+    .slice-1 .slice-content { transform: translate(-50%, -50%) rotate(-45deg); }
+    .slice-2 .slice-content { transform: translate(-50%, -50%) rotate(-90deg); }
+    .slice-3 .slice-content { transform: translate(-50%, -50%) rotate(-135deg); }
+    .slice-4 .slice-content { transform: translate(-50%, -50%) rotate(-180deg); }
+    .slice-5 .slice-content { transform: translate(-50%, -50%) rotate(-225deg); }
+    .slice-6 .slice-content { transform: translate(-50%, -50%) rotate(-270deg); }
+    .slice-7 .slice-content { transform: translate(-50%, -50%) rotate(-315deg); }
+
+    .roulette-center {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: #1a1a2e;
+      border: 6px solid #f1c40f;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    .roulette-pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-top: 40px solid #ffffff;
+      z-index: 20;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
+    }
+
+    /* INPUTS GRANDES */
+    .bet-input, .withdraw-input {
+      width: 100%;
+      padding: 6vw;
+      background: rgba(255, 255, 255, 0.1);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      color: white;
+      font-size: 1.6rem;
+      text-align: center;
+      margin: 6vw 0;
+      min-height: 70px;
+    }
+
+    .bet-input:focus, .withdraw-input:focus {
+      outline: none;
+      border-color: #f1c40f;
+      box-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
+    }
+
+    /* RESULTADOS GRANDES */
+    .roulette-result {
+      text-align: center;
+      margin: 6vw 0;
+      padding: 6vw;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .result-success {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+      border: 2px solid rgba(46, 204, 113, 0.4);
+    }
+
+    .result-error {
+      background: rgba(231, 76, 60, 0.2);
+      color: #e74c3c;
+      border: 2px solid rgba(231, 76, 60, 0.4);
+    }
+
+    /* ANIMAÇÕES */
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .spinning {
+      animation: spin 3s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    /* RESPONSIVIDADE PARA TELAS MAIORES */
+    @media (min-width: 768px) {
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px;
+      }
+      
+      .title {
+        font-size: 3rem;
+      }
+      
+      .balance-section {
+        padding: 30px;
+      }
+      
+      .btn-small {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+      }
+      
+      .btn-main, .logout-btn, .watch-ad-btn, .spin-btn, .withdraw-btn {
+        padding: 25px;
+        font-size: 1.4rem;
+      }
+      
+      .modal-content {
+        padding: 40px;
+        width: 90%;
+        max-width: 600px;
+      }
+      
+      .roulette-container {
+        width: 400px;
+        height: 400px;
+      }
+      
+      .bet-input, .withdraw-input {
+        padding: 20px;
+        font-size: 1.3rem;
+      }
+    }
+
+    /* SCROLL PERSONALIZADO */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #f1c40f;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+<!-- Container Principal QUE OCUPA TELA INTEIRA 
 -->
   <div class="container">
     <!-- Cabeçalho -->
