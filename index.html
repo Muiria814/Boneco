@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Inicial - Minerador de Passos Doge</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 70px;
+    }
+
+    /* Container principal */
+    .main-container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Cartão do formulário */
+    .form-card {
+      background: rgba(22, 33, 62, 0.95);
+      border-radius: 20px;
+      padding: 40px 35px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    .logo {
+      color: #f1c40f;
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+    }
+
+    .title {
+      color: #ffffff;
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .subtitle {
+      color: #b8b8b8;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 35px;
+    }
+
+    /* Botões */
+    .buttons-column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .action-btn {
+      padding: 18px;
+      border-radius: 15px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .create-account-btn {
+      background: linear-gradient(135deg, #f1c40f, #e67e22);
+      color: #1a1a2e;
+    }
+
+    .create-account-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 22px rgba(241, 196, 15, 0.4);
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #00b894, #00a085);
+      color: #ffffff;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 22px rgba(0, 184, 148, 0.4);
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .title {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+      }
+
+      .logo {
+        font-size: 3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-container">
+    <div class="main-card">
+
+      <div class="logo">
+        <i class="fas fa-dog"></i>
+      </div>
+
+      <h1 class="title">MINERADOR DE PASSOS DOGE</h1>
+
+      <p class="subtitle">
+        Conquiste passos virtuais, converta para Dogecoin e ganhe recompensas incríveis.
+        Comece sua jornada no universo das criptomoedas de forma divertida e gratificante.
+      </p>
+
+      <div class="buttons-column">
+        <a href="criar-conta.html" class="action-btn create-account-btn">
+          <i class="fas fa-user-plus"></i>
+          Criar Nova Conta
+        </a>
+
+        <a href="iniciar-sessao.html" class="action-btn login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sessão
+        </a>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

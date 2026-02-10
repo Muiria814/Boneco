@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sessão - Minerador de Passos Doge</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Reset e configurações gerais */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  min-height: 100dvh;
+  padding: 12px;
+}
+
+.main-container {
+  width: 100%;
+  max-width: none;
+}
+
+.form-card {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+    /* Cabeçalho */
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      color: #f1c40f;
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      color: #ffffff;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      color: #b8b8b8;
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    /* Grupo de campos do formulário */
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    /* Labels */
+    .form-label {
+      display: block;
+      color: #f1c40f;
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      margin-left: 5px;
+    }
+
+    /* Campos de entrada */
+    .input-field {
+      width: 100%;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #f1c40f;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2);
+    }
+
+    .input-field::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Botão principal */
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #00b894, #00a085);
+      color: white;
+      border: none;
+      padding: 18px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0, 184, 148, 0.3);
+      background: linear-gradient(135deg, #00d4a7, #00b894);
+    }
+
+    .submit-btn:active {
+      transform: translateY(-1px);
+    }
+
+    /* Links extras */
+    .extra-links {
+      text-align: right;
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
+
+    .forgot-password {
+      color: #f1c40f;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .forgot-password:hover {
+      color: #ffd32a;
+      text-decoration: underline;
+    }
+
+    /* Links e seção de navegação */
+    .navigation-section {
+      text-align: center;
+      margin-top: 35px;
+      padding-top: 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .register-prompt {
+      color: #b8b8b8;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .register-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #f1c40f, #e67e22);
+      color: #1a1a2e;
+      text-decoration: none;
+      padding: 12px 30px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .register-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(241, 196, 15, 0.3);
+    }
+
+    .back-link {
+      display: block;
+      color: #f1c40f;
+      text-decoration: none;
+      margin-top: 25px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-link:hover {
+      color: #ffd32a;
+      text-decoration: underline;
+    }
+
+    /* Mensagens de feedback */
+    .message {
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 500;
+      display: none;
+    }
+
+    .message.success {
+      background: rgba(46, 204, 113, 0.15);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.3);
+      display: block;
+    }
+
+    .message.error {
+      background: rgba(231, 76, 60, 0.15);
+      color: #e74c3c;
+      border: 1px solid rgba(231, 76, 60, 0.3);
+      display: block;
+    }
+
+    /* Responsividade */
+    @media (max-width: 480px) {
+      .form-card {
+        padding: 30px 25px;
+      }
+      
+      .title {
+        font-size: 1.6rem;
+      }
+      
+      .input-field {
+        padding: 14px 18px;
+      }
+      
+      .submit-btn {
+        padding: 16px;
+      }
+    }
+
+    /* Animações */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-card {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    /* Ícone dentro do campo */
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-with-icon i {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .input-with-icon i:hover {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    @media (min-width: 768px) {
+  body {
+    padding: 32px;
+  }
+
+  .form-card {
+    padding: 32px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .form-card {
+    max-width: 520px;
+    padding: 40px;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .logo {
+    font-size: 2.4rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <div class="form-card">
+      <!-- Cabeçalho -->
+      <div class="header">
+        <div class="logo">
+          <i class="fas fa-dog"></i>
+        </div>
+        <h1 class="title">MINERADOR DE PASSOS DOGE</h1>
+        <p class="subtitle">Acesse sua conta</p>
+      </div>
+
+      <!-- Formulário de Login -->
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email" class="form-label">
+            <i class="fas fa-envelope" style="margin-right: 8px;"></i>Endereço de Email
+          </label>
+          <input 
+            type="email" 
+            id="email" 
+            class="input-field" 
+            placeholder="Digite o seu email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">
+            <i class="fas fa-lock" style="margin-right: 8px;"></i>Palavra-passe
+          </label>
+          <div class="input-with-icon">
+            <input 
+              type="password" 
+              id="password" 
+              class="input-field" 
+              placeholder="Digite sua palavra-passe"
+              required
+            >
+            <i class="fas fa-eye" id="togglePassword"></i>
+          </div>
+          <div class="extra-links">
+            <a href="#" class="forgot-password">
+              <i class="fas fa-question-circle"></i>
+              Esqueceu a palavra-passe?
+            </a>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Iniciar Sessão
+        </button>
+
+        <div id="message" class="message"></div>
+      </form>
+
+      <!-- Navegação -->
+      <div class="navigation-section">
+        <p class="register-prompt">Não possui uma conta?</p>
+        <a href="criar-conta.html" class="register-link">
+          <i class="fas fa-user-plus"></i>
+          Criar Conta
+        </a>
+        
+        <a href="index.html" class="back-link">
+          <i class="fas fa-arrow-left"></i>
+          Voltar à Página Inicial
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mostrar/ocultar senha
+    document.getElementById('togglePassword').addEventListener('click', function() {
+      const passwordField = document.getElementById('password');
+      const icon = this;
+      
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        passwordField.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    });
+
+    // Validação do formulário
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const messageDiv = document.getElementById('message');
+      
+      // Limpar mensagem anterior
+      messageDiv.textContent = '';
+      messageDiv.className = 'message';
+      
+      // Validações básicas
+      if (!email || !password) {
+        showMessage('Por favor, preencha todos os campos.', 'error');
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        showMessage('Por favor, insira um email válido.', 'error');
+        return;
+      }
+      
+      if (password.length < 6) {
+        showMessage('A senha deve ter pelo menos 6 caracteres.', 'error');
+        return;
+      }
+      
+      // Verificar se o usuário existe
+      const userData = localStorage.getItem('dogeUser');
+      
+      if (!userData) {
+        showMessage('Conta não encontrada. Por favor, crie uma conta primeiro.', 'error');
+        return;
+      }
+      
+      const user = JSON.parse(userData);
+      
+      // Verificar credenciais
+      if (user.email === email && user.password === password) {
+        showMessage('Login bem-sucedido! Redirecionando...', 'success');
+        
+        // Atualizar último login
+        user.lastLogin = new Date().toISOString();
+        localStorage.setItem('dogeUser', JSON.stringify(user));
+        
+        // Redirecionar após 1.5 segundos
+        setTimeout(() => {
+          window.location.href = 'app.html';
+        }, 1500);
+      } else {
+        showMessage('Email ou palavra-passe incorretos.', 'error');
+        
+        // Limpar campo de senha após erro
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+      }
+    });
+    
+    // Função para recuperar senha (simulação)
+    document.querySelector('.forgot-password').addEventListener('click', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const messageDiv = document.getElementById('message');
+      
+      if (!email || !isValidEmail(email)) {
+        showMessage('Por favor, insira seu email para recuperar a senha.', 'error');
+        return;
+      }
+      
+      // Verificar se o email existe
+      const userData = localStorage.getItem('dogeUser');
+      
+      if (userData) {
+        const user = JSON.parse(userData);
+        if (user.email === email) {
+          showMessage('Instruções de recuperação enviadas para ' + email + ' (simulação)', 'success');
+        } else {
+          showMessage('Email não encontrado no sistema.', 'error');
+        }
+      } else {
+        showMessage('Nenhuma conta encontrada com este email.', 'error');
+      }
+    });
+    
+    function showMessage(text, type) {
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = text;
+      messageDiv.className = `message ${type}`;
+      messageDiv.style.display = 'block';
+      
+      // Auto-esconder mensagens de sucesso após 5 segundos
+      if (type === 'success') {
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+        }, 5000);
+      }
+    }
+    
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    
+    // Verificar se já está logado
+    window.onload = function() {
+      const savedUser = localStorage.getItem('dogeUser');
+      if (savedUser) {
+        // Se já tem sessão ativa, redirecionar para app
+        window.location.href = 'app.html';
+      }
+      
+      // Focar no campo de email ao carregar
+      document.getElementById('email').focus();
+    };
+  </script>
+</body>
+</html>
