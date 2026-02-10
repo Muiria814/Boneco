@@ -1,6 +1,3 @@
-</script>
-</body>
-
 <link rel="stylesheet" href="style.css">
 
  <!-- Container Principal QUE OCUPA TELA INTEIRA 
