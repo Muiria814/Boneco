@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Minerador de Passos DOGE</title>
+
+<style>
+html, body{
+  margin:0;
+  padding:0;
+  height:100%;
+  background:radial-gradient(circle at top left, #1a0f2e, #0d0b1a);
+}
+
+body{
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  background:radial-gradient(circle at 20% 20%, #2d1b3a, #0a0710);
+  color:#fff;
+  min-height:100dvh;
+  position:relative;
+}
+
+/* Fundo com efeito estrelado */
+body::before {
+  content: '';
+  position:fixed;
+  inset:0;
+  background:radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+             radial-gradient(2px 2px at 40px 70px, #ffd700, rgba(0,0,0,0)),
+             radial-gradient(2px 2px at 120px 180px, #fff, rgba(0,0,0,0)),
+             radial-gradient(2px 2px at 250px 90px, #f5b301, rgba(0,0,0,0)),
+             radial-gradient(2px 2px at 300px 250px, #fff, rgba(0,0,0,0)),
+             radial-gradient(2px 2px at 450px 150px, #ffaa00, rgba(0,0,0,0)),
+             radial-gradient(2px 2px at 550px 320px, #fff, rgba(0,0,0,0)),
+             radial-gradient(2px 2px at 680px 70px, #f5b301, rgba(0,0,0,0));
+  background-size:200px 200px;
+  background-repeat:repeat;
+  opacity:0.15;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* APP - AGORA TAMBÉM COM TAMANHO GRANDE */
+.app{
+  width:100%;
+  min-height:100dvh;
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  z-index:2;
+  box-sizing:border-box;
+  max-width:600px;
+  margin:0 auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header{
+  text-align:center;
+  margin-bottom:30px;
+  padding:20px 0;
+  background:rgba(15,27,61,0.5);
+  backdrop-filter:blur(10px);
+  border-radius:30px;
+  border:1px solid rgba(245,179,1,0.2);
+}
+
+.header h1{
+  color:#f5b301;
+  font-size:clamp(24px,5vw,32px);
+  font-weight:800;
+  text-shadow:0 0 15px rgba(245,179,1,0.5);
+}
+
+.welcome{
+  opacity:.9;
+  font-size:16px;
+  margin-top:10px;
+  color:#e0e0ff;
+}
+
+/* =========================
+   SALDO BOX
+========================= */
+.saldo-box{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(15,27,61,0.85);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:30px;
+  border:1px solid rgba(245,179,1,0.3);
+  box-shadow:0 8px 30px rgba(0,0,0,0.5);
+}
+
+.saldo-box h2{
+  margin-top:5px;
+  color:#f5b301;
+  text-shadow:0 0 10px rgba(245,179,1,0.5);
+  font-size:28px;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+.gold-btn{
+  background:linear-gradient(135deg,#f5b301,#ffd54f);
+  border:none;
+  border-radius:12px;
+  padding:12px 18px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(245,179,1,0.3);
+  transition:transform 0.2s;
+  font-size:15px;
+}
+
+.gold-btn:hover {
+  transform:scale(1.05);
+}
+
+.main-btn{
+  width:100%;
+  padding:20px;
+  border-radius:20px;
+  border:none;
+  font-size:18px;
+  background:linear-gradient(135deg,#2a4fff,#1f6bff);
+  color:#fff;
+  cursor:pointer;
+  margin-bottom:20px;
+  box-shadow:0 8px 25px rgba(31,107,255,0.4);
+  transition:transform 0.2s, box-shadow 0.2s;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+.main-btn:hover {
+  transform:translateY(-3px);
+  box-shadow:0 15px 30px rgba(31,107,255,0.6);
+}
+
+.logout-btn{
+  width:100%;
+  padding:18px;
+  border-radius:20px;
+  border:none;
+  background:linear-gradient(135deg,#e53935,#ff5252);
+  color:#fff;
+  cursor:pointer;
+  margin-top:auto;
+  box-shadow:0 8px 20px rgba(229,57,53,0.4);
+  transition:transform 0.2s;
+  font-weight:bold;
+  font-size:16px;
+}
+
+.logout-btn:hover {
+  transform:translateY(-2px);
+}
+
+/* Centralização vertical dos botões */
+.center-buttons{
+  margin-top:auto;
+  margin-bottom:auto;
+  display:flex;
+  flex-direction:column;
+  gap:25px;
+  padding:20px 0;
+}
+
+/* =========================
+   MODAL FULLSCREEN - TODOS IGUAIS E GRANDES
+========================= */
+.modal{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at top left, #1f1435, #080614);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:50px;
+  overflow-y:auto;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.modal-box{
+  width:100%;
+  max-width:600px;
+  min-height:90dvh;
+  background:rgba(15,27,61,0.92);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  padding:45px 35px;
+  border-radius:40px;
+  border:1px solid rgba(245,179,1,0.3);
+  box-shadow:0 0 60px rgba(245,179,1,0.2);
+  display:flex;
+  flex-direction:column;
+}
+
+/* =========================
+   ROLETA - PONTEIRO EM BAIXO
+========================= */
+.modal-box.roulette-box{
+  max-width:600px;
+  min-height:100dvh;
+  padding: 150px;
+}
+
+.wheel-wrapper{
+  width:90vw;
+  height:90vw;
+  max-width:500px;
+  max-height:500px;
+  margin:0 auto 40px;
+  position:relative;
+}
+.wheel{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:10px solid #f5b301;
+  background:conic-gradient(
+    #ff9800 0deg 45deg,
+    #f44336 45deg 90deg,
+    #4caf50 90deg 135deg,
+    #03a9f4 135deg 180deg,
+    #9c27b0 180deg 225deg,
+    #2196f3 225deg 270deg,
+    #8bc34a 270deg 315deg,
+    #ffc107 315deg 360deg
+  );
+  transition:transform 7s cubic-bezier(0.1,0.6,0.2,1);
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 30px rgba(245,179,1,0.6);
+}
+
+/* Centro */
+.wheel-center{
+  position:absolute;
+  width:50px;
+  height:50px;
+  background: radial-gradient(circle at 30% 30%, #ffd700, #b8860b);
+  border-radius:50%;
+  z-index:40;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 20px #ffd700;
+}
+
+/* Ponteiro EMBAIXO e virado para CIMA */
+.pointer{
+  position:absolute;
+  bottom:-40px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;
+  height:0;
+  border-left:30px solid transparent;
+  border-right:30px solid transparent;
+  border-top:50px solid #ffffff;  /* Aponta para cima */
+  z-index:100;
+  filter:drop-shadow(0 0 15px rgba(255,255,255,0.9));
+}
+
+/* Labels */
+.wheel-labels{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:20;
+}
+
+.wheel-labels span{
+  position:absolute;
+  font-weight:900;
+  font-size:clamp(18px,5vw,28px);
+  letter-spacing:2px;
+  text-shadow:0 0 10px rgba(0,0,0,0.8);
+  color:white;
+}
+/* MULTIPLICADORES POSIÇÃO EXATA */
+.multiplier-0{ transform: rotate(22.5deg) translate(0, -120px) rotate(-22.5deg); }
+.multiplier-1{ transform: rotate(67.5deg) translate(0, -120px) rotate(-67.5deg); }
+.multiplier-2{ transform: rotate(112.5deg) translate(0, -120px) rotate(-112.5deg); }
+.multiplier-3{ transform: rotate(157.5deg) translate(0, -120px) rotate(-157.5deg); }
+.multiplier-4{ transform: rotate(202.5deg) translate(0, -120px) rotate(-202.5deg); }
+.multiplier-5{ transform: rotate(247.5deg) translate(0, -120px) rotate(-247.5deg); }
+.multiplier-6{ transform: rotate(292.5deg) translate(0, -120px) rotate(-292.5deg); }
+.multiplier-7{ transform: rotate(337.5deg) translate(0, -120px) rotate(-337.5deg); }
+
+/* =========================
+   INPUTS
+========================= */
+input{
+  width:100%;
+  padding:20px;
+  border-radius:20px;
+  border:2px solid #f5b301;
+  margin-bottom:30px;
+  font-size:18px;
+  background:rgba(6,11,36,0.8);
+  color:#fff;
+  box-sizing:border-box;
+}
+
+input::placeholder{
+  color:#aaa;
+}
+
+input:focus {
+  outline:none;
+  box-shadow:0 0 25px rgba(245,179,1,0.5);
+  border-color:#ffd700;
+}
+
+/* =========================
+   MENSAGENS
+========================= */
+.message{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:18px 30px;
+  border-radius:50px;
+  font-size:18px;
+  z-index:2000;
+  font-weight:bold;
+  box-shadow:0 15px 40px rgba(0,0,0,0.8);
+  text-align:center;
+  max-width:90%;
+  backdrop-filter:blur(10px);
+  background:linear-gradient(135deg,#2ecc71,#27ae60); /* SEMPRE VERDE */
+  color:white;
+}
+
+/* =========================
+   MINERAÇÃO - AGORA GRANDE COMO ROLETA
+========================= */
+.mining-box{
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+  justify-content:fixed;
+  padding: 25vw;
+}
+
+.steps-counter{
+  font-size:clamp(42px,10vw,64px);
+  font-weight:800;
+  color:#f5b301;
+  margin:20px 0;
+  text-shadow:0 0 25px rgba(245,179,1,0.6);
+}
+
+/* Animação */
+.mining-active{
+  animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+  100%{transform:scale(1)}
+}
+
+/* =========================
+   LOGOUT TEXT
+========================= */
+.logout-text{
+  text-align:center;
+  margin-top:30px;
+  padding:18px;
+  color:#ff9999;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:17px;
+  transition:color 0.2s;
+  border-top:1px solid rgba(255,255,255,0.1);
+  background:rgba(0,0,0,0.2);
+  border-radius:20px;
+}
+
+.logout-text:hover {
+  color:#ff5252;
+  background:rgba(229,57,53,0.1);
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (min-width:768px){
+  .app{
+    max-width:600px;
+    margin:0 auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <div class="header">
+    🐕
+    <h1>MINERADOR DE PASSOS DOGE</h1>
+    <div class="welcome">Bem-vindo! Mina passos e multiplica os teus DOGE 🚀</div>
+  </div>
+
+  <div class="saldo-box">
+    <div>
+      <small>SALDO DOGE</small>
+      <h2 id="balance">0.00</h2>
+    </div>
+    <button class="gold-btn" onclick="openDeposit()">Depositar</button>
+    <button class="gold-btn" onclick="openWithdraw()">Levantar</button>
+  </div>
+
+ <div class="center-buttons">
+  <button class="main-btn" onclick="openMining()">⛏️ MINERAÇÃO DE PASSOS</button>
+  <button class="main-btn" onclick="openRoulette()">🎲 JOGO DE ROLETA</button>
+</div>
+
+<div class="logout-text" onclick="logout()">⏻ TERMINAR SESSÃO</div>
+
+<!-- MINERAÇÃO TELA CHEIA - AGORA GRANDE COMO ROLETA -->
+<div id="miningModal" class="modal hidden">
+  <div class="modal-box mining-box">
+    <h2 style="color:#f5b301; margin-bottom:35px; font-size:36px; text-align:center;">⛏️ MINERADOR</h2>
+    
+    <div style="background:rgba(5,8,20,0.7); backdrop-filter:blur(5px); padding:25px; border-radius:25px; margin-bottom:25px; border:1px solid rgba(245,179,1,0.2);">
+      <div style="font-size:20px; opacity:0.9; margin-bottom:10px;">⏳ TEMPO RESTANTE</div>
+      <div style="font-size:64px; font-weight:800; color:#f5b301; margin:15px 0; text-shadow:0 0 25px rgba(245,179,1,0.6); text-align:center;" id="time">60:00</div>
+    </div>
+    
+    <div style="background:rgba(5,8,20,0.7); backdrop-filter:blur(5px); padding:25px; border-radius:25px; margin-bottom:35px; border:1px solid rgba(245,179,1,0.2);">
+      <div style="font-size:20px; opacity:0.9; margin-bottom:10px;">👣 PASSOS MINERADOS</div>
+      <div class="steps-counter" id="steps" style="text-align:center;">0</div>
+    </div>
+    
+    <p id="miningStatus" style="font-size:18px; margin-bottom:20px; color:#ffd54f; text-align:center;"></p>
+    
+    <button id="startMiningBtn" class="main-btn" onclick="startMining()" style="margin-top:15px; padding:20px; font-size:20px;">Iniciar Mineração</button>
+    <button class="logout-btn" onclick="closeMining()" style="margin-top:15px; padding:18px; font-size:18px;">Fechar</button>
+  </div>
+</div>
+
+<!-- DEPÓSITO -->
+<div id="depositModal" class="modal hidden">
+  <div class="modal-box">
+    <h2 style="color:#f5b301; font-size:36px; margin-bottom:30px; text-align:center;">📥 Depositar</h2>
+    <p style="margin:25px 0; font-size:20px;">Envia DOGE para:</p>
+    <div class="address" onclick="copyAddress()" style="background:rgba(6,11,36,0.8); padding:20px; border-radius:16px; border:1px solid #f5b301; word-break:break-all; cursor:pointer; font-size:16px;">DRgNGmH2udV4CzdVqANYFNDWPLZaXAjJ5N</div>
+    <p style="margin:30px 0; font-size:18px; opacity:0.9;">Mínimo: 1 DOGE</p>
+    <button class="main-btn" onclick="closeDeposit()" style="margin-top:25px; padding:20px;">Fechar</button>
+  </div>
+</div>
+
+<!-- LEVANTAR -->
+<div id="withdrawModal" class="modal hidden">
+  <div class="modal-box">
+    <h2 style="color:#f5b301; font-size:36px; margin-bottom:35px; text-align:center;">📤 Levantar</h2>
+    <input id="withdrawValue" type="number" placeholder="5 a 10 DOGE" min="5" max="10" step="0.1" style="font-size:20px;">
+    <button class="main-btn" onclick="withdraw()" style="margin-top:15px; padding:20px;">Confirmar</button>
+    <button class="logout-btn" onclick="closeWithdraw()" style="margin-top:15px; padding:18px;">Cancelar</button>
+  </div>
+</div>
+
+<!-- ROLETA -->
+<div id="rouletteModal" class="modal hidden">
+  <div class="modal-box roulette-box">
+    <h2 style="color:#f5b301; margin-bottom:25px; font-size:36px; text-align:center;">🎲 ROLETA DOGE</h2>
+    
+    <div class="wheel-wrapper">
+      <!-- PONTEIRO EM BAIXO e virado para CIMA -->
+      <div class="pointer"></div>
+      
+      <!-- RODA QUE GIRA -->
+      <div id="wheel" class="wheel">
+        <div class="wheel-labels" id="wheelLabels"></div>
+        <div class="wheel-center"></div>
+      </div>
+    </div>
+    
+    <input id="bet" type="number" placeholder="VALOR DA APOSTA (0.5 - 5 DOGE)" step="0.1" min="0.5" max="5" style="font-size:18px;">
+    
+    <button class="main-btn" onclick="spin()" style="margin-top:10px; font-size:22px; padding:22px;">🎰 GIRAR ROLETA</button>
+    <button class="logout-btn" onclick="closeRoulette()" style="font-size:20px; padding:18px;">Fechar</button>
+  </div>
+</div>
+
+<div id="msg" class="message hidden"></div>
+
+<script>
+let balance = Number(localStorage.getItem("balance")) || 0;
+let steps = Number(localStorage.getItem("steps")) || 0;
+let miningStart = localStorage.getItem("miningStart");
+let mining = false;
+let isSpinning = false;
+
+// MULTIPLICADORES COM PROBABILIDADES AJUSTADAS (maior chance para <1x)
+const displayMultipliers = [1.5, 0.2, 1.2, 0.5, 1.7, 0.7, 2, 1.2];
+
+// Array de probabilidades personalizado (mais chances para multiplicadores baixos)
+const weightedMultipliers = [
+  0.2, 0.2, 0.2, 0.2,  // 0.2x - 4x mais chance
+  0.5, 0.5, 0.5, 0.5,  // 0.5x - 4x mais chance
+  0.7, 0.7, 0.7,       // 0.7x - 3x mais chance
+  1.2, 1.2, 1.2,       // 1.2x - 3x mais chance
+  1.5,                 // 1.5x
+  1.7,                 // 1.7x
+  2                    // 2x
+];
+
+function updateUI(){
+  document.getElementById("balance").innerText = balance.toFixed(2);
+  document.getElementById("steps").innerText = steps;
+  localStorage.setItem("balance", balance);
+  localStorage.setItem("steps", steps);
+}
+
+function msg(t, type){
+  const m = document.getElementById("msg");
+  m.innerText = t;
+  m.className = "message"; // Sempre verde, removido classe de erro
+  m.classList.remove("hidden");
+  setTimeout(() => m.classList.add("hidden"), 4500);
+}
+
+/* MINERAÇÃO */
+function openMining(){
+  document.getElementById("miningModal").classList.remove("hidden");
+  if(miningStart){
+    document.getElementById("miningStatus").innerText = "⛏️ MINERANDO...";
+  }
+}
+function closeMining(){
+  document.getElementById("miningModal").classList.add("hidden");
+}
+
+function startMining(){
+  if(mining) {
+    msg("Mineração já está em andamento!", "success");
+    return;
+  }
+  
+  mining = true;
+  miningStart = Date.now();
+  localStorage.setItem("miningStart", miningStart);
+  
+  const btn = document.getElementById("startMiningBtn");
+  btn.innerText = "⛏️ MINERANDO...";
+  btn.classList.add("mining-active");
+  document.getElementById("miningStatus").innerText = "⛏️ MINERANDO...";
+  msg("Mineração iniciada! Ganhe passos a cada segundo.", "success");
+}
+
+// Intervalo da mineração
+setInterval(() => {
+  if(!miningStart) return;
+  
+  const elapsed = Math.floor((Date.now() - Number(miningStart)) / 1000);
+  let remaining = 3600 - elapsed;
+  
+  if(remaining <= 0){
+    remaining = 0;
+    mining = false;
+    miningStart = null;
+    localStorage.removeItem("miningStart");
+    
+    document.getElementById("time").innerText = "00:00";
+    document.getElementById("miningStatus").innerText = "✅ Mineração concluída!";
+    
+    const btn = document.getElementById("startMiningBtn");
+    if(btn) {
+      btn.innerText = "Iniciar Mineração";
+      btn.classList.remove("mining-active");
+    }
+    return;
+  }
+  
+  steps += 1;
+  
+  if(steps >= 1000){
+    let earned = Math.floor(steps / 1000);
+    balance += earned;
+    steps = steps % 1000;
+  }
+  
+  let minutes = Math.floor(remaining / 60);
+  let seconds = remaining % 60;
+  
+  const timeEl = document.getElementById("time");
+  if(timeEl) timeEl.innerText = `${minutes}:${String(seconds).padStart(2,"0")}`;
+  
+  updateUI();
+}, 1000);
+
+/* DEPÓSITO */
+function openDeposit(){depositModal.classList.remove("hidden")}
+function closeDeposit(){depositModal.classList.add("hidden")}
+function copyAddress(){
+  navigator.clipboard.writeText("DRgNGmH2udV4CzdVqANYFNDWPLZaXAjJ5N");
+  msg("Endereço copiado ✅","success");
+}
+
+/* LEVANTAR */
+function openWithdraw(){withdrawModal.classList.remove("hidden")}
+function closeWithdraw(){withdrawModal.classList.add("hidden")}
+function withdraw(){
+  const v = Number(document.getElementById("withdrawValue").value);
+  if(v<5||v>10){msg("Levantamento entre 5 e 10 DOGE","success");return}
+  if(v>balance){msg("Saldo insuficiente","success");return}
+  balance -= v;
+  updateUI();
+  msg("Levantamento registado ✅","success");
+  closeWithdraw();
+}
+
+/* ROLETA */
+function openRoulette(){
+  rouletteModal.classList.remove("hidden");
+  renderWheelLabels();
+  
+  const wheel = document.getElementById("wheel");
+  wheel.style.transition = 'none';
+  wheel.style.transform = 'rotate(0deg)';
+  void wheel.offsetHeight;
+  wheel.style.transition = 'transform 7s cubic-bezier(0.1, 0.6, 0.2, 1)';
+  
+  document.getElementById("bet").value = "";
+  isSpinning = false;
+}
+
+function closeRoulette(){
+  rouletteModal.classList.add("hidden");
+  isSpinning = false;
+}
+
+function renderWheelLabels(){
+  const labelsContainer = document.getElementById("wheelLabels");
+  labelsContainer.innerHTML = "";
+  
+  displayMultipliers.forEach((mult, index) => {
+    const span = document.createElement("span");
+    span.innerText = mult.toFixed(1) + "x";
+    span.className = "multiplier-" + index;
+    labelsContainer.appendChild(span);
+  });
+}
+
+function spin(){
+  if(isSpinning) {
+    msg("A roleta já está a girar! Aguarde...", "success");
+    return;
+  }
+  
+  const bet = Number(document.getElementById("bet").value);
+  if(!bet || bet < 0.5 || bet > 5){
+    msg("Aposta inválida (0.5 - 5 DOGE)", "success");
+    return;
+  }
+  if(bet > balance){
+    msg("Saldo insuficiente", "success");
+    return;
+  }
+  
+  // Deduz aposta
+  balance -= bet;
+  updateUI();
+  
+  isSpinning = true;
+  
+  // SORTEIA MULTIPLICADOR COM PESO (maior chance para baixos)
+  const randomIndex = Math.floor(Math.random() * weightedMultipliers.length);
+  const m = weightedMultipliers[randomIndex];
+  
+  // Encontra o índice correspondente no array de exibição
+  let displayIndex = 0;
+  if (m === 1.5) displayIndex = 0;
+  else if (m === 0.2) displayIndex = 1;
+  else if (m === 1.2) displayIndex = 2; 
+  else if (m === 0.5) displayIndex = 3;
+  else if (m === 1.7) displayIndex = 4;
+  else if (m === 0.7) displayIndex = 5;
+  else if (m === 2) displayIndex = 6;
+  else displayIndex = 2; // default 1.2x
+  
+  const wheel = document.getElementById("wheel");
+  
+  // RESET
+  wheel.style.transition = 'none';
+  wheel.style.transform = 'rotate(0deg)';
+  void wheel.offsetHeight;
+  
+  // ATIVA GIRO LENTO - 7 SEGUNDOS
+  wheel.style.transition = 'transform 7s cubic-bezier(0.1, 0.6, 0.2, 1)';
+  
+  // GIRA - ponteiro em baixo, cálculo correto
+  const targetDegrees = 22.5 + (displayIndex * 45);
+  wheel.style.transform = `rotate(${360 * 3 + targetDegrees}deg)`;
+  
+  // MENSAGEM SEMPRE POSITIVA, SÓ VALOR GANHO
+  setTimeout(() => {
+    const ganho = Number((bet * m).toFixed(2));
+    balance = Number((balance + ganho).toFixed(2));
+    updateUI();
+    
+    msg(`🎉 PARABÉNS! 🎉 Ganhou ${ganho.toFixed(2)} DOGE`, "success");
+    
+    isSpinning = false;
+  }, 7000);
+}
+
+// Logout
+function logout(){
+  balance = 0;
+  steps = 0;
+  mining = false;
+  miningStart = null;
+  localStorage.clear();
+  updateUI();
+  msg("Sessão terminada. Até breve!", "success");
+}
+
+// Inicializar
+updateUI();
+if(miningStart){
+  mining = true;
+  document.getElementById("miningStatus").innerText = "⛏️ MINERANDO...";
+}
+
+// Tecla Enter para girar roleta
+document.addEventListener('keypress', function(e) {
+  if(e.key === 'Enter' && !rouletteModal.classList.contains('hidden') && !isSpinning) {
+    spin();
+  }
+});
+</script>
+
+</body>
+</html>
