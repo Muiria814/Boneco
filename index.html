@@ -17,6 +17,7 @@ body{
   width:100%;
   margin:0;
   overflow-x:hidden;
+  font-size:18px;
 }
 
 body{
@@ -40,7 +41,7 @@ h1{
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  font-size:28px;
+  font-size:34px;
   margin-bottom:10px;
 }
 
@@ -100,16 +101,20 @@ h1{
 
 .section{
   background:#0f1b3d;
-  padding:25px;
+  padding:30px;
   border-radius:20px;
   margin-bottom:40px;
 }
 
-.section p{
-  font-size:18px;
-  margin-bottom:10px;
+.section h2{
+  font-size:28px;
+  margin-bottom:15px;
 }
 
+.section p{
+  font-size:22px;
+  margin-bottom:10px;
+}
 .main-btn{
   width:100%;
   padding:18px;
@@ -307,14 +312,19 @@ input{
   bottom:0;
   left:0;
   width:100%;
-  background:#0f1b3d;
+  background:#0b0618;
+  text-align:center;
   padding:20px;
-  font-size:16px;
+  font-size:18px;
+  color:#ff6b6b;
+  font-weight:300;
+  letter-spacing:1px;
+  border-top:1px solid rgba(255,107,107,0.3);
 }
 
-.terminar-sessao:hover {
-  color: #ff8c8c;
-  border-top: 1px solid #ff6b6b;
+.terminar-sessao:hover{
+  color:#ff8c8c;
+  border-top:1px solid #ff6b6b;
 }
 
 @media (min-width: 1024px){
@@ -544,7 +554,7 @@ function startMining(){
 function renderLabels(){
   const container = document.getElementById("labels");
   container.innerHTML = '';
-  const radius = 90;
+  const radius = 140;
   
   multipliers.forEach((m, i)=>{
     const span = document.createElement("span");
