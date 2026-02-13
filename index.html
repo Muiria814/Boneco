@@ -165,6 +165,7 @@ h1{
 }
 
 /* EIXO METÁLICO EM FORMA DE PARAFUSO */
+
 .wheel::after {
   content: "⨁";
   position: absolute;
@@ -220,14 +221,21 @@ h1{
   z-index: 15;
 }
 
-input{
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border:2px solid gold;
-  background:#0b0618;
-  color:white;
-  margin-top:10px;
+input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: 2px solid gold;
+    background: #111827; /* mais visível */
+    color: white;
+    margin: 20px 0;
+    font-size: 16px; /* evita zoom no Android */
+    outline: none;
+    box-sizing: border-box;
+}
+
+input::placeholder {
+    color: #aaa;
 }
 
 .message{
@@ -244,6 +252,7 @@ input{
 }
 
 /* MODAL */
+
 .modal {
   display: none;
   position: fixed;
