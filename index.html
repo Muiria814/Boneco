@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minerador DOGE</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#140a2a,#0b0618);
+  font-family:Arial, sans-serif;
+  color:white;
+}
+
+.container{
+  width:100%;
+  max-width:500px;
+  margin:auto;
+  padding:20px;
+}
+
+/* TÍTULO COM COR BONITA */
+h1{
+  background: linear-gradient(45deg, #ffd700, #ffa500, #ff8c00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 5px;
+}
+
+/* MENSAGEM DE BOAS VINDAS */
+.welcome-message{
+  color: #b0c4de;
+  margin-bottom: 20px;
+  font-style: italic;
+  border-left: 4px solid #ffd700;
+  padding-left: 15px;
+}
+
+/* SALDO */
+.saldo{
+  background:#0f1b3d;
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:25px;
+}
+
+.saldo h2{
+  margin:10px 0;
+}
+
+.buttons{
+  display:flex;
+  gap:10px;
+}
+
+.btn{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+  color:white;
+}
+
+.deposit{
+  background:linear-gradient(135deg,#00c6ff,#0072ff);
+}
+
+.withdraw{
+  background:linear-gradient(135deg,#2c3e50,#34495e);
+}
+
+/* SEÇÕES */
+.section{
+  background:#0f1b3d;
+  padding:20px;
+  border-radius:20px;
+  margin-bottom:30px;
+}
+
+.main-btn{
+  width:100%;
+  padding:15px;
+  margin-top:15px;
+  border:none;
+  border-radius:15px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+  background:linear-gradient(135deg,#2a4fff,#1f6bff);
+  color:white;
+}
+
+.main-btn:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
+
+/* ROLETA */
+.wheel-wrapper{
+  width:100%;
+  max-width:300px;
+  aspect-ratio:1/1;
+  margin:20px auto;
+  position:relative;
+}
+
+.wheel{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  border:6px solid gold;
+  transition:transform 7s cubic-bezier(0.1,0.6,0.2,1);
+  background:conic-gradient(
+    #ff9800 0deg 45deg,
+    #f44336 45deg 90deg,
+    #4caf50 90deg 135deg,
+    #03a9f4 135deg 180deg,
+    #9c27b0 180deg 225deg,
+    #2196f3 225deg 270deg,
+    #8bc34a 270deg 315deg,
+    #ffc107 315deg 360deg
+  );
+  position:relative;
+  z-index: 1;
+}
+
+/* EIXO METÁLICO EM FORMA DE PARAFUSO */
+.wheel::after {
+  content: "⨁";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 44px;
+  height: 44px;
+  background: radial-gradient(circle at 40% 40%, #e0e0e0, #808080);
+  border-radius: 50%;
+  border: 3px solid #c0c0c0;
+  box-shadow: 
+    inset 0 -2px 5px rgba(0,0,0,0.5),
+    inset 0 2px 5px rgba(255,255,255,0.6),
+    0 0 10px rgba(192,192,192,0.5);
+  color: #2c2c2c;
+  font-size: 32px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.8), -1px -1px 2px rgba(0,0,0,0.6);
+  z-index: 20;
+}
+
+.pointer{
+  position:absolute;
+  bottom:-15px;
+  left:50%;
+  transform:translateX(-50%) rotate(180deg);
+  width:0;
+  height:0;
+  border-left:18px solid transparent;
+  border-right:18px solid transparent;
+  border-top:30px solid white;
+  z-index: 10;
+}
+
+.wheel-labels span{
+  position:absolute;
+  left:50%;
+  top:50%;
+  font-size:16px;
+  font-weight:bold;
+  color:white;
+  white-space: nowrap;
+  background: rgba(0,0,0,0.7);
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.5);
+  text-shadow: none;
+  transform-origin: center;
+  z-index: 15;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:2px solid gold;
+  background:#0b0618;
+  color:white;
+  margin-top:10px;
+}
+
+.message{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#2ecc71;
+  padding:12px 20px;
+  border-radius:20px;
+  display:none;
+  font-weight:bold;
+  z-index: 1000;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #0f1b3d;
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 90%;
+  border: 2px solid gold;
+}
+
+.modal-content h3 {
+  color: #ffd700;
+  margin-bottom: 15px;
+}
+
+.modal-content input {
+  margin: 10px 0;
+}
+
+.modal-content .small-text {
+  font-size: 12px;
+  color: #b0c4de;
+  margin-bottom: 15px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg,#00c6ff,#0072ff);
+}
+
+.cancel-btn {
+  background: linear-gradient(135deg,#2c3e50,#34495e);
+}
+
+/* TERMINAR SESSÃO */
+.terminar-sessao{
+  margin-top: 40px;
+  text-align: center;
+  padding: 15px;
+  color: #ff6b6b;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor:pointer;
+  border-top: 1px solid rgba(255,107,107,0.3);
+}
+
+.terminar-sessao:hover {
+  color: #ff8c8c;
+  border-top: 1px solid #ff6b6b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🐕 MINERADOR DOGE</h1>
+<div class="welcome-message">Bem-vindo ao Minerador DOGE! Aqui você pode minerar e apostar suas DOGE com segurança e diversão!</div>
+
+<div class="saldo">
+  <div>Saldo DOGE</div>
+  <h2 id="balance">0.00</h2>
+  <div class="buttons">
+    <button class="btn deposit" onclick="openDepositModal()">Depositar</button>
+    <button class="btn withdraw" onclick="openWithdrawModal()">Levantar</button>
+  </div>
+</div>
+
+<div class="section">
+  <h2>⛏️ Mineração</h2>
+  <p>Tempo restante: <span id="time">60:00</span></p>
+  <p>Passos: <span id="steps">0</span></p>
+  <p style="color: #ffd700; font-size: 14px;">Conversão automática ativada após 1000 passos</p>
+  <button id="mineBtn" class="main-btn" onclick="startMining()">Iniciar Mineração</button>
+</div>
+
+<div class="section">
+  <h2>🎲 ROLETA DOGE</h2>
+
+  <div class="wheel-wrapper">
+    <div class="pointer"></div>
+    <div id="wheel" class="wheel">
+      <div id="labels" class="wheel-labels"></div>
+    </div>
+  </div>
+
+  <input id="bet" type="number" placeholder="VALOR DA APOSTA (0.5 - 5 DOGE)" min="0.5" max="5" step="0.1">
+  <button id="spinBtn" class="main-btn" onclick="spin()">GIRAR ROLETA</button>
+</div>
+
+<!-- MODAL DEPÓSITO -->
+<div id="depositModal" class="modal">
+  <div class="modal-content">
+    <h3>💰 DEPOSITAR DOGE</h3>
+    <p style="color:#ffd700; margin-bottom:10px;">Endereço de depósito:</p>
+    <p style="background:#0b0618; padding:12px; border-radius:10px; border:1px solid gold; word-break:break-all; margin-bottom:15px;">
+      DRgNGmH2udV4CzdVqANYFNDWPLZaXAjJ5N
+    </p>
+    <input id="depositAmount" type="number" placeholder="Valor a depositar (mínimo 1 DOGE)" min="1" step="0.1">
+    <div class="small-text" style="color:#ff9999;">
+      ⚠️ O valor mínimo de depósito é 1 DOGE. Se enviar abaixo desse montante, o seu depósito não será creditado e nós não assumiremos nenhuma responsabilidade.
+    </div>
+    <div class="modal-buttons">
+      <button class="modal-btn confirm-btn" onclick="confirmDeposit()">Confirmar</button>
+      <button class="modal-btn cancel-btn" onclick="closeDepositModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL LEVANTAMENTO -->
+<div id="withdrawModal" class="modal">
+  <div class="modal-content">
+    <h3>💸 LEVANTAR DOGE</h3>
+    <p style="color:#ffd700; margin-bottom:5px;">Valor mínimo: 10 DOGE</p>
+    <input id="withdrawAmount" type="number" placeholder="Valor a levantar" min="10" step="0.1">
+    <p style="color:#ffd700; margin:15px 0 5px;">Endereço Dogecoin:</p>
+    <input id="withdrawAddress" type="text" placeholder="Digite seu endereço DOGE">
+    <div class="small-text">
+      Certifique-se de que o endereço está correto. Envios não podem ser revertidos.
+    </div>
+    <div class="modal-buttons">
+      <button class="modal-btn confirm-btn" onclick="confirmWithdraw()">Confirmar</button>
+      <button class="modal-btn cancel-btn" onclick="closeWithdrawModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TERMINAR SESSÃO -->
+<div class="terminar-sessao" onclick="resetGame()">
+  Terminar Sessão
+</div>
+
+</div>
+
+<div id="msg" class="message"></div>
+
+<script>
+let balance = Number(localStorage.getItem("balance")) || 0;
+let steps = 0;
+let mining = false;
+let miningStart = null;
+let isSpinning = false;
+let currentRotation = 0;
+
+const multipliers = [1.5, 0.2, 1.2, 0.5, 1.7, 0.7, 2, 1.2];
+
+function updateUI(){
+  document.getElementById("balance").innerText = balance.toFixed(2);
+  document.getElementById("steps").innerText = steps;
+  localStorage.setItem("balance", balance);
+}
+
+function showMsg(text, isError = false){
+  const m = document.getElementById("msg");
+  m.innerText = text;
+  m.style.display = "block";
+  m.style.background = isError ? "#e74c3c" : "#2ecc71";
+  setTimeout(()=>m.style.display="none",3000);
+}
+
+/* MODAIS DEPÓSITO */
+function openDepositModal(){
+  document.getElementById("depositModal").style.display = "flex";
+  document.getElementById("depositAmount").value = "";
+}
+
+function closeDepositModal(){
+  document.getElementById("depositModal").style.display = "none";
+}
+
+function confirmDeposit(){
+  const v = Number(document.getElementById("depositAmount").value);
+  
+  if(!v || v < 1){
+    showMsg("Valor mínimo de depósito é 1 DOGE!", true);
+    return;
+  }
+  
+  balance += v;
+  updateUI();
+  showMsg("Depósito de " + v.toFixed(2) + " DOGE realizado com sucesso!");
+  closeDepositModal();
+}
+
+/* MODAIS LEVANTAMENTO */
+function openWithdrawModal(){
+  document.getElementById("withdrawModal").style.display = "flex";
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAddress").value = "";
+}
+
+function closeWithdrawModal(){
+  document.getElementById("withdrawModal").style.display = "none";
+}
+
+function confirmWithdraw(){
+  const v = Number(document.getElementById("withdrawAmount").value);
+  const address = document.getElementById("withdrawAddress").value.trim();
+  
+  if(!v || v < 10){
+    showMsg("Valor mínimo de levantamento é 10 DOGE!", true);
+    return;
+  }
+  
+  if(v > balance){
+    showMsg("Saldo insuficiente!", true);
+    return;
+  }
+  
+  if(!address){
+    showMsg("Por favor, insira seu endereço Dogecoin!", true);
+    return;
+  }
+  
+  if(address.length < 10){
+    showMsg("Endereço Dogecoin inválido!", true);
+    return;
+  }
+  
+  balance -= v;
+  updateUI();
+  showMsg("Levantamento de " + v.toFixed(2) + " DOGE solicitado para o endereço: " + address.substring(0,8) + "...");
+  closeWithdrawModal();
+}
+
+/* MINERAÇÃO */
+function startMining(){
+  if(mining) return;
+
+  mining = true;
+  miningStart = Date.now();
+  steps = 0;
+
+  const btn = document.getElementById("mineBtn");
+  btn.innerText = "⛏️ Minerando...";
+  btn.disabled = true;
+
+  const interval = setInterval(()=>{
+    const elapsed = Math.floor((Date.now()-miningStart)/1000);
+    const remaining = 3600 - elapsed;
+
+    if(remaining <= 0){
+      clearInterval(interval);
+      mining = false;
+      btn.innerText = "Iniciar Mineração";
+      btn.disabled = false;
+      showMsg("Mineração concluída! 60 DOGE adicionados!");
+      return;
+    }
+
+    steps++;
+    if(steps >= 1000){
+      balance++;
+      steps = 0;
+      updateUI();
+    }
+
+    let min = Math.floor(remaining/60);
+    let sec = remaining % 60;
+    document.getElementById("time").innerText =
+      `${min}:${String(sec).padStart(2,"0")}`;
+
+    updateUI();
+  },1000);
+}
+
+/* ROLETA */
+function renderLabels(){
+  const container = document.getElementById("labels");
+  container.innerHTML = '';
+  const radius = 90;
+  
+  multipliers.forEach((m, i)=>{
+    const span = document.createElement("span");
+    span.innerText = m + "x";
+    const angle = i * 45 + 22.5;
+    const rad = (angle) * Math.PI / 180;
+    const x = Math.cos(rad) * radius;
+    const y = Math.sin(rad) * radius;
+    span.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+    container.appendChild(span);
+  });
+}
+renderLabels();
+
+function spin(){
+  if(isSpinning) {
+    showMsg("A roleta já está girando!", true);
+    return;
+  }
+
+  const bet = Number(document.getElementById("bet").value);
+  if(!bet || bet < 0.5 || bet > 5){
+    showMsg("Aposta inválida (mínimo 0.5, máximo 5 DOGE)", true);
+    return;
+  }
+  if(bet > balance){
+    showMsg("Saldo insuficiente!", true);
+    return;
+  }
+
+  balance -= bet;
+  updateUI();
+
+  isSpinning = true;
+  document.getElementById("spinBtn").disabled = true;
+
+  const slice = 45;
+  const margin = 3;
+  
+  const index = Math.floor(Math.random() * 8);
+  const multiplier = multipliers[index];
+  
+  const sliceStart = index * slice;
+  const randomAngle = sliceStart + margin + (Math.random() * (slice - 2 * margin));
+  
+  let targetAngle = 360 - randomAngle + 180;
+  targetAngle = targetAngle % 360;
+  
+  const extraSpins = 1800 + (Math.floor(Math.random() * 3) * 360);
+  currentRotation += extraSpins + targetAngle;
+
+  document.getElementById("wheel").style.transform =
+    `rotate(${currentRotation}deg)`;
+
+  setTimeout(()=>{
+    const win = bet * multiplier;
+    balance += win;
+    updateUI();
+    showMsg(`Ganhou ${win.toFixed(2)} DOGE! (${multiplier}x)`);
+    isSpinning = false;
+    document.getElementById("spinBtn").disabled = false;
+  }, 7000);
+}
+
+/* RESET DO JOGO */
+function resetGame(){
+  if(confirm("Tem certeza que deseja terminar a sessão? Todo progresso será perdido!")){
+    balance = 0;
+    steps = 0;
+    mining = false;
+    currentRotation = 0;
+    document.getElementById("wheel").style.transform = `rotate(0deg)`;
+    updateUI();
+    document.getElementById("time").innerText = "60:00";
+    document.getElementById("mineBtn").innerText = "Iniciar Mineração";
+    document.getElementById("mineBtn").disabled = false;
+    showMsg("Sessão encerrada!");
+  }
+}
+
+updateUI();
+</script>
+
+</body>
+</html>
