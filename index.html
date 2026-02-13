@@ -17,13 +17,14 @@ body{
   background:linear-gradient(135deg,#140a2a,#0b0618);
   font-family:Arial, sans-serif;
   color:white;
+width:100%;
+  overflow-x:hidden;
 }
 
 .container{
   width:100%;
-  max-width:500px;
-  margin:auto;
   padding:20px;
+  box-sizing:border-box;
 }
 
 /* TÍTULO COM COR BONITA */
@@ -291,6 +292,13 @@ input{
 .terminar-sessao:hover {
   color: #ff8c8c;
   border-top: 1px solid #ff6b6b;
+}
+
+@media (min-width: 1024px){
+  .container{
+    max-width:900px;
+    margin:auto;
+  }
 }
 </style>
 </head>
