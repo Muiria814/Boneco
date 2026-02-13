@@ -22,8 +22,6 @@ body{
 }
 
 body{
-  display:flex;
-  flex-direction:column;
   background:linear-gradient(135deg,#140a2a,#0b0618);
   font-family:Arial, sans-serif;
   color:white;
@@ -595,7 +593,7 @@ function spin(){
     return;
   }
 
-  const bet = Number(document.getElementById("bet").value);
+  const bet = Number(document.getElementById("betAmount").value);
   if(!bet || bet < 0.5 || bet > 5){
     showMsg("Aposta inválida (mínimo 0.5, máximo 5 DOGE)", true);
     return;
