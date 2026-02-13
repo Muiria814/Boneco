@@ -13,22 +13,25 @@
 }
 
 body{
-  min-height:100vh;
-  background:linear-gradient(135deg,#140a2a,#0b0618);
-  font-family:Arial, sans-serif;
-  color:white;
-width:100%;
+  height:100%;
+  width:100%;
+  margin:0;
   overflow-x:hidden;
 }
 
-.container{
-  width:100%;
-  min-height:100vh;
-  padding:25px;
-  box-sizing:border-box;
+body{
   display:flex;
   flex-direction:column;
-  padding-bottom:90px;
+  background:linear-gradient(135deg,#140a2a,#0b0618);
+  font-family:Arial, sans-serif;
+  color:white;
+}
+
+.container{
+  flex:1;
+  width:100%;
+  padding:30px 25px 120px 25px;
+  box-sizing:border-box;
 }
 
 /* TÍTULO COM COR BONITA */
@@ -52,16 +55,20 @@ h1{
 }
 
 /* SALDO */
+
 .saldo{
   background:#0f1b3d;
-  padding:20px;
+  padding:25px;
   border-radius:20px;
-  margin-bottom:25px;
-font-size:28px;
+  margin-bottom:40px;
+}
+
+.saldo div{
+  font-size:16px;
 }
 
 .saldo h2{
-  margin:10px 0;
+  font-size:32px;
 }
 
 .buttons{
@@ -88,12 +95,17 @@ font-size:28px;
 }
 
 /* SEÇÕES */
+
 .section{
   background:#0f1b3d;
-  padding:20px;
+  padding:25px;
   border-radius:20px;
-  margin-bottom:30px;
-  font-size:20px;
+  margin-bottom:40px;
+}
+
+.section p{
+  font-size:16px;
+  margin-bottom:10px;
 }
 
 .main-btn{
@@ -291,14 +303,9 @@ input{
   bottom:0;
   left:0;
   width:100%;
-  background:#0b0618;
-  text-align:center;
-  padding:18px;
-  color:#ff6b6b;
-  font-size:15px;
-  letter-spacing:1px;
-  cursor:pointer;
-  border-top:1px solid rgba(255,107,107,0.3);
+  background:#0f1b3d;
+  padding:20px;
+  font-size:16px;
 }
 
 .terminar-sessao:hover {
