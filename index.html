@@ -22,7 +22,7 @@ body{
   width:100%;
   margin:0;
   overflow-x:hidden;
-  font-size:16px; /* era 18 */
+  font-size:clamp(16px, 2.5vw, 20px);
 display:flex;
 flex-direction:column;
   background:linear-gradient(135deg,#140a2a,#0b0618);
@@ -32,10 +32,9 @@ flex-direction:column;
 
 .container{
     width:100%;
-    max-width:500px;
+    max-width:900px;   /* usa melhor o ecrã */
     margin:0 auto;
-    padding:15px;
-    box-sizing:border-box;
+    padding:clamp(16px, 4vw, 40px);
 }
 
 /* TÍTULO COM COR BONITA */
@@ -44,7 +43,7 @@ h1{
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  font-size:44px;
+  font-size:clamp(36px, 6vw, 56px);
   margin-bottom:10px;
 }
 
@@ -72,7 +71,7 @@ h1{
 }
 
 .saldo h2{
-  font-size:40px;
+  font-size:clamp(42px, 7vw, 64px);
   font-weight:bold;
   margin-top:10px;
 }
@@ -110,21 +109,21 @@ h1{
 }
 
 .section h2{
-  font-size:28px;
+  font-size:clamp(24px, 4vw, 32px);
   margin-bottom:15px;
 }
 
 .section p{
-  font-size:22px;
+  font-size:clamp(18px, 3.5vw, 24px);
   margin-bottom:10px;
 }
 .main-btn{
   width:100%;
-  padding:18px;
   margin-top:15px;
   border:none;
   border-radius:15px;
-  font-size:18px;
+  font-size:clamp(18px, 3vw, 22px);
+  padding:clamp(16px, 3vw, 22px);
   font-weight:bold;
   cursor:pointer;
   background:linear-gradient(135deg,#2a4fff,#1f6bff);
