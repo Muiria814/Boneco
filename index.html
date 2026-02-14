@@ -19,10 +19,14 @@
             background-color: #0b0618;
         }
 
-        body {
+        html {
+    height: 100%;
+}
+
+body {
     min-height: 100dvh; /* viewport real no mobile */
-    width: 200%;
-    margin: 100%;
+    width: 100%;
+    margin: 0;
     overflow-x: hidden;
 
     background: linear-gradient(135deg, #140a2a, #0b0618);
@@ -37,13 +41,13 @@
 overscroll-behavior: none;
 }
 
-        .container {
-            width: 200%;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 100px 85px;
-            flex: 1; /* Empurra o rodapé para o fundo */
-        }
+   .container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px 15px;
+    flex: 1;
+}
 
         h1 {
             background: linear-gradient(45deg, #ffd700, #ffa500, #ff8c00);
