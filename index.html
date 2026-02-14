@@ -20,18 +20,22 @@
         }
 
         body {
-            min-height: 100vh;
-            width: 100%;
-            margin: 0;
-            overflow-x: hidden;
-            /* Gradiente fixo que cobre todo o ecrã */
-            background: linear-gradient(135deg, #140a2a, #0b0618) no-repeat center center fixed;
-            background-size: cover;
-            font-family: Arial, sans-serif;
-            color: white;
-            display: flex;
-            flex-direction: column;
-        }
+    min-height: 100svh; /* viewport real no mobile */
+    width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+
+    background: linear-gradient(135deg, #140a2a, #0b0618);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    font-family: Arial, sans-serif;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+overscroll-behavior: none;
+}
 
         .container {
             width: 100%;
