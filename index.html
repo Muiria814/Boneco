@@ -21,8 +21,8 @@ body{
   width:100%;
   margin:0;
   overflow-x:hidden;
-  font-size: clamp(18px, 4vw, 22px);
-  line-height: 1.5;
+  font-size: clamp(16px, 3.5vw, 20px);
+  line-height: 1.4;
   display:flex;
   flex-direction:column;
   background:linear-gradient(135deg,#140a2a,#0b0618);
@@ -45,7 +45,7 @@ h1{
   background: linear-gradient(45deg, #ffd700, #ffa500, #ff8c00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: clamp(40px, 8vw, 64px);
+  font-size: clamp(36px, 6vw, 52px);
   margin-bottom: 10px;
 }
 
@@ -72,7 +72,7 @@ h1{
 }
 
 .saldo h2{
-  font-size: clamp(48px, 10vw, 72px);
+  font-size: clamp(40px, 8vw, 60px);
   font-weight:bold;
   margin-top:10px;
 }
@@ -121,11 +121,11 @@ h1{
 
 .main-btn{
   width:100%;
-  margin-top:15px;
   border:none;
   border-radius:15px;
-  padding: clamp(18px, 5vw, 26px);
-  font-size: clamp(20px, 5vw, 24px);
+  padding: clamp(14px, 4vw, 22px);
+  font-size: clamp(18px, 4vw, 22px);
+  margin-top: 10px;
   font-weight:bold;
   cursor:pointer;
   background:linear-gradient(135deg,#2a4fff,#1f6bff);
@@ -139,9 +139,9 @@ h1{
 
 /* ROLETA GIGANTE */
 .wheel-wrapper{
-  width: min(90vw, 420px);
+  width: min(80vw, 360px);
   aspect-ratio: 1 / 1;
-  margin: 50px auto 20px;
+  margin: 40px auto 50px;
   position: relative;
 }
 
@@ -191,14 +191,14 @@ h1{
 
 .pointer{
   position: absolute;
-  top: -28px;
+  top: 50%;   /* centralizado vertical */
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%) rotate(180deg); /* girado 180° para baixo */
   width: 0;
   height: 0;
   border-left: 18px solid transparent;
   border-right: 18px solid transparent;
-  border-bottom: 28px solid #ff2d55;
+  border-top: 28px solid #ff2d55; /* agora é “top” para apontar para baixo */
   z-index: 30;
 }
 
@@ -299,8 +299,7 @@ input::placeholder {
 
 .card,
 .section {
-  margin-bottom: 48px;
-}
+  margin-bottom: 30px;
 
 #spinBtn{
   margin-top: 30px;
@@ -351,21 +350,39 @@ input::placeholder {
     </div>
 </div>
 
+<!-- BOTÃO PARA ABRIR ROLETA -->
+<div class="card" style="text-align:center;">
+  <button class="main-btn" onclick="openWheel()" style="font-size:22px; padding:20px;">
+    🎲 JOGAR ROLETA
+  </button>
+</div>
+
 <!-- SEÇÃO DA ROLETA GIGANTE -->
-<div id="wheelSection" class="hidden">
+<div id="wheelSection" class="hidden" style="text-align:center;">
   <h2>🎲 Roleta DOGE</h2>
+
   <div class="wheel-wrapper">
     <div class="pointer"></div>
     <div id="wheel" class="wheel">
       <div id="labels" class="wheel-labels"></div>
     </div>
   </div>
+
+  <!-- Input de aposta -->
   <input type="number" id="betAmount" placeholder="Aposta (0.5 - 5 DOGE)" min="0.5" max="5" step="0.1">
-  <button id="spinBtn" class="main-btn" onclick="spin()">GIRAR ROLETA</button>
-  <p style="margin-top:20px; font-size:18px; color:#ffd700; text-align:center;">
-    Gire a roleta e transforme cada DOGE em fortuna!
+
+  <!-- BOTÃO DA ROLETA -->
+  <button id="spinBtn" class="main-btn" onclick="spin()" style="margin-top:20px;">GIRAR ROLETA</button>
+
+  <!-- MENSAGEM ATRATIVA -->
+  <p style="margin-top:15px; font-size:18px; color:#ffd700;">
+    Gire a roleta e multiplique os seus DOGE!
   </p>
-  <button class="main-btn" onclick="closeWheel()" style="margin-top:20px; background:#444;">⬅ Voltar</button>
+
+  <!-- BOTÃO VOLTAR -->
+  <button class="main-btn" onclick="closeWheel()" style="margin-top:20px; background:#444;">
+    ⬅ Voltar
+  </button>
 </div>
 
 <div class="terminar-sessao" onclick="resetGame()">Terminar Sessão</div>
