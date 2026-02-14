@@ -145,10 +145,10 @@ h1{
 /* ROLETA */
 
 .wheel-wrapper{
-  width: 100%;
-  max-width: 420px;
-  height: 420px;
-  margin: 60px auto 70px;
+  width: min(90vw, 420px);
+  aspect-ratio: 1 / 1;
+  margin: 50px auto 60px;
+  position: relative;
 }
 
 
@@ -201,15 +201,15 @@ h1{
 
 .pointer{
   position: absolute;
-  top: 50%;
+  top: -28px;
   left: 50%;
-  transform: translate(-50%, -100%);
+  transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-bottom: 32px solid white;
-  z-index: 20;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 28px solid #ff2d55;
+  z-index: 30;
 }
 
 .wheel-labels span{
@@ -390,14 +390,15 @@ input::placeholder {
         <button id="mineBtn" class="main-btn" onclick="startMining()" style="margin-top:15px;">Iniciar Mineração</button>
     </div>
 
-    <div class="card" style="text-align: center;">
-        <h2 style="text-align: left; margin-bottom:10px;">🎲 Roleta DOGE</h2>
-        <div class="wheel-wrapper">
-            <div class="pointer"></div>
-            <div id="wheel" class="wheel">
-                <div id="labels" class="wheel-labels"></div>
-            </div>
-        </div>
+    <div class="card" style="text-align:center;">
+  <h2>🎲 Roleta DOGE</h2>
+
+  <div class="wheel-wrapper">
+    <div class="pointer"></div>
+    <div id="wheel" class="wheel">
+      <div id="labels" class="wheel-labels"></div>
+    </div>
+  </div>
         <input type="number" id="betAmount" placeholder="Aposta (0.5 - 5 DOGE)" min="0.5" max="5" step="0.1">
         <button id="spinBtn" class="main-btn" onclick="spin()">GIRAR ROLETA</button>
     </div>
